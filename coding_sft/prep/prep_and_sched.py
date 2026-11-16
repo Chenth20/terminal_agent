@@ -37,7 +37,7 @@ def main() -> None:
     ap.add_argument("--name", required=True, help="dataset name inside that dir (dataset_info.json key)")
     ap.add_argument("--manifest", default="", help="manifest jsonl, one line per source row (job/env_key/sample); "
                                                   "default <dir>/<name>.manifest.jsonl")
-    ap.add_argument("--world", type=int, default=16, help="ranks of the training job (2 AIS nodes = 16)")
+    ap.add_argument("--world", type=int, default=16, help="total GPU ranks of the training job")
     ap.add_argument("--epochs", type=int, default=8)
     ap.add_argument("--order", choices=("group_by_length", "global_sort", "random", "random_fixed"), default="global_sort",
                     help="step composition (build_traj_sched.py --order); sched dir suffix: _gsort / _rand / _randfix")
@@ -71,7 +71,7 @@ def main() -> None:
              "--set", f"dataset_dir={d}", f"dataset={args.name}", f"tokenized_path={tok}", "overwrite_cache=true",
              "preprocessing_num_workers=32"])
 
-    # the AIS launcher auto-detects the schedule only when <dir>/<name>.manifest.jsonl sits next to the data
+    # Keep the source-row mapping alongside the prepared data.
     local_manifest = os.path.join(d, f"{args.name}.manifest.jsonl")
     if os.path.exists(manifest) and not os.path.exists(local_manifest):
         import shutil
@@ -93,8 +93,9 @@ def main() -> None:
     print(f"  trajectory sched : {sched}")
     print(f"  trajectories     : {m['n_trajs']}  (rows {m['n_source_rows']}, dummy {m['dummy_rows']})")
     print(f"  steps            : {m['steps']} ({m['steps_per_epoch']}/epoch x {m['epochs']})  ga = {m['G']}")
-    print(f"  launch           : SCHED_TOK={sched} VARIANT=<variant> NODES={args.world // 8} "
-          f"bash coding_sft/launch/ais/submit_ablation_ais.sh")
+    print(f"  training overrides: tokenized_path={sched} disable_shuffling=true "
+          f"max_steps={m['steps']} gradient_accumulation_steps={m['G']} "
+          f"keep_weights_every={m['steps_per_epoch']}")
 
 
 if __name__ == "__main__":

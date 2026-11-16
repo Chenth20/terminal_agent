@@ -1,0 +1,652 @@
+{
+ "reward_ref": {
+  "key": "cth-tb2-reward-mirror",
+  "version": "1.0.1"
+ },
+ "aggregation": {
+  "method": "mean",
+  "failed_task_policy": "failed_as_zero"
+ },
+ "env_refs": [
+  {
+   "env_ref": {
+    "key": "tb2-adaptive-rejection-sampler",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-bn-fit-modify",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-break-filter-js-from-html",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-build-cython-ext",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-build-pmars",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-build-pov-ray",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-caffe-cifar-10",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-cancel-async-tasks",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-chess-best-move",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-circuit-fibsqrt",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-cobol-modernization",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-code-from-image",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-compile-compcert",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-configure-git-webserver",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-constraints-scheduling",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-count-dataset-tokens",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-crack-7z-hash",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-custom-memory-heap-crash",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-db-wal-recovery",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-distribution-search",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-dna-assembly",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-dna-insert",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-extract-elf",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-extract-moves-from-video",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-feal-differential-cryptanalysis",
+    "version": "6.4.1"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-feal-linear-cryptanalysis",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-filter-js-from-html",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-financial-document-processor",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-fix-code-vulnerability",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-fix-git",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-fix-ocaml-gc",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-gcode-to-text",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-git-leak-recovery",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-git-multibranch",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-gpt2-codegolf",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-headless-terminal",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-hf-model-inference",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-install-windows-3.11",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-kv-store-grpc",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-large-scale-text-editing",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-largest-eigenval",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-llm-inference-batching-scheduler",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-log-summary-date-ranges",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-mailman",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-make-doom-for-mips",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-make-mips-interpreter",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-mcmc-sampling-stan",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-merge-diff-arc-agi-task",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-model-extraction-relu-logits",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-modernize-scientific-stack",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-mteb-leaderboard",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-mteb-retrieve",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-multi-source-data-merger",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-nginx-request-logging",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-openssl-selfsigned-cert",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-overfull-hbox",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-password-recovery",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-path-tracing",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-path-tracing-reverse",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-polyglot-c-py",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-polyglot-rust-c",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-portfolio-optimization",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-protein-assembly",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-prove-plus-comm",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-pypi-server",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-pytorch-model-cli",
+    "version": "6.4.2-gepa-cache"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-pytorch-model-recovery",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-qemu-alpine-ssh",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-qemu-startup",
+    "version": "6.4.1"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-query-optimize",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-raman-fitting",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-regex-chess",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-regex-log",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-reshard-c4-data",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-rstan-to-pystan",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-sam-cell-seg",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-sanitize-git-repo",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-schemelike-metacircular-eval",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-sparql-university",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-sqlite-db-truncate",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-sqlite-with-gcov",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-torch-pipeline-parallelism",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-torch-tensor-parallelism",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-train-fasttext",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-tune-mjcf",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-video-processing",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-vulnerable-secret",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-winning-avg-corewars",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "tb2-write-compressor",
+    "version": "6.4.0"
+   },
+   "weight": 1
+  }
+ ],
+ "tags": [
+  "agent-timeout:4h",
+  "chen",
+  "corrected-env-refs",
+  "envs-6.4.0-plus-verifier-fixes",
+  "harness:terminus-2",
+  "infra:gepa-pytorch-verifier-cache",
+  "reward:cth-tb2-reward-mirror",
+  "scope:full",
+  "source:terminal-bench",
+  "suite:2.1",
+  "terminal-bench-2.1"
+ ],
+ "metadata": {
+  "notes": "Same 89 envs/weights/aggregation as tb21-terminus2-full@2.1.3-gepa-pytorch-cache-v2; reward swapped to cth-tb2-reward-mirror@1.0.0 (official test.sh unchanged; uv pre-installed from bundled tarball, pypi -> aliyun mirror, workdir falls back to ARENA_AGENT_WORKDIR). Fixes reward-stage network failures (uvx: command not found / files.pythonhosted.org timeouts) that zeroed 10-26% of tasks per job, and tb2-prove-plus-comm's 'No working directory set'. 1.0.1: reward cth-tb2-reward-mirror@1.0.1 (uv timeout 600s, HF xet disabled).",
+  "derived_from": "tb21-terminus2-full@2.1.3-gepa-pytorch-cache-v2"
+ }
+}

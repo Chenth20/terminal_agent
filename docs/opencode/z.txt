@@ -1,0 +1,105 @@
+# matrixllm-fix.js — opencode 全局插件改动总结
+
+生成时间: 2026-10-22
+目标文件: /root/.config/opencode/plugin/matrixllm-fix.js
+日志目录: /root/.config/opencode/matrixllm-debug/  (plugin.log + req-*.json)
+
+## 1. 新增 / 修改的文件
+
+| 文件 | 动作 | 说明 |
+|---|---|---|
+| /root/.config/opencode/plugin/matrixllm-fix.js | 新建 | 全部逻辑（约 890 行，纯 ESM，零外部依赖） |
+| /root/.config/opencode/matrixllm-debug/plugin.log | 运行时自动生成 | 每次请求/重试/降级的完整轨迹，超 5MB 自动轮转为 .1 |
+| /root/.config/opencode/matrixllm-debug/req-*.json | 运行时按需生成 | 仅在 400 InvalidParameter 时落盘原始+过滤后请求体，只保留最近 30 份 |
+| /root/.config/opencode/opencode.jsonc | 未改动 | 插件放在全局 plugin/ 目录即可被自动发现，无需注册 |
+| 项目 opencode.json（llama-factory / AReaL） | 未改动 | provider 定义保持不变 |
+
+## 2. 插件挂载方式
+
+- 导出形态：`export default async ({client, project, directory, $}) => ({ config })`，符合 @opencode-ai/plugin@1.19.3 的 Hooks 签名。
+- 在 `config` hook 里遍历 `cfg.provider`，只对 baseURL/id 命中 `matrixllm` 的 provider 安装 wrapper：
+  `cfg.provider.matrixllm.options.fetch = wrappedFetch`。
+- opencode 内部会把 provider 的 fetch 再包一层（chunkTimeout/headerTimeout），所以 wrapper 位于最内层，
+  真正发请求时使用 `globalThis.fetch`，超时与重试语义不受影响。
+- 只拦截 URL 匹配 `/chat/completions` 的请求，`/models` 等其它端点原样透传。
+- 幂等：同一 provider 只包装一次（wrappedProviderIds）。
+
+## 3. 请求侧：参数白名单 + 消息净化
+
+白名单（只保留这些字段，其余全部丢弃）：
+model, messages, stream, stream_options, max_tokens, temperature, top_p, stop, seed, n,
+frequency_penalty, presence_penalty, logprobs, top_logprobs, response_format, tools,
+tool_choice, parallel_tool_calls, user
+
+- `max_completion_tokens` → 自动改写为 `max_tokens`。
+- `top_k` 直接删除（非 OpenAI 兼容字段）。
+- `tools` 重建为 `{type:"function", function:{name, description, parameters}}`，空数组删除。
+- 无 tools 时删除 tool_choice。
+- messages 只保留 role / content / name / tool_calls / tool_call_id：
+  * content 数组只保留 text、image_url / image / file / input_audio 这几类 part，
+    未知 part（reasoning、cache_control 等）丢弃；纯 text 数组会拍平成字符串。
+  * tool_calls 规范化为 {id, type:"function", function:{name, arguments(字符串)}}，arguments 是对象则 JSON.stringify。
+  * role=tool 的消息 content 强制为字符串，缺 tool_call_id 的整条丢弃。
+  * 非字符串 name 丢弃。
+- 实测：带 `metadata` / `store` / `providerOptions` / `cache_control` 的请求原本返回
+  `400 protocol_conversion_not_support`，现在被过滤后正常 200。
+
+## 4. 失败判定（不做循环重试）
+
+非流式（JSON）：
+- 非 2xx；
+- 200 但 body 有 `error`；
+- 200 但 `choices` 为空；
+- `choices[0].message.refusal` 非空；
+- `finish_reason` ∈ {content_filter, refusal, safety, blocked, guardrail, sensitive}；
+- 既无 content、无 tool_calls、无 reasoning_content（空内容）。
+
+流式（SSE）：
+- 先"预读"直到出现第一个有效增量（content / reasoning_content / tool_calls / finish_reason），
+  或读到 error / refusal / 危险 finish_reason，最多等 20s、最多缓 1MB；
+- 判定失败 → 立即 cancel 该流并转入降级，此时客户端还没收到任何内容，可安全切换；
+- 判定成功 → 返回新 Response，把已预读 chunk + 剩余流顺序转发（保持流式体验）；
+- 若 refusal 出现在内容之后（无法回滚），注入一条 SSE error 事件并在日志记 `late stream failure`，
+  文案刻意避开 opencode 重试正则，不再重试。
+
+## 5. 重试与降级策略
+
+1. 主目标：请求原样指向 matrixllm（模型保持调用方指定，如 claude-fable-5-1）。
+2. 唯一允许的重试：HTTP 400/422 且命中 invalid/unsupport/not support/protocol_conversion/参数
+   → 落盘 req-*.json（原始+过滤后 body、被丢弃字段、错误体）→ 用最小字段集
+   [model, messages, stream, stream_options, max_tokens, tools, tool_choice] 重发一次。
+   仅一次，失败即进入降级。
+3. 降级链（逐个尝试，每个只试一次）：
+   - matrixllm/claude-fable-5（同一 baseURL + 同一 key）
+   - Aliyun/deepseek-v4.1-flash-1017（baseURL 切到 https://dashscope.aliyuncs.com/compatible-mode/v1，
+     Authorization 换成 ALIYUN_TOKEN）
+   与主目标 url+model+key 完全相同的目标会自动去重跳过。
+4. 全部失败 → 返回 HTTP 400 + `{"error":{"message":"matrixllm plugin: every upstream target rejected this request; not retrying", ...}}`。
+   选 400 + 该文案是刻意的：opencode 的 SessionRetry 只对 408/409/429/5xx 及
+   "rate limit / overloaded / timeout / ECONNRESET ..." 等文案重试，因此这里**不会触发 5 次退避重试**。
+5. 兜底：插件自身抛异常时，退回调用原本的 fetch（不阻断请求）。
+
+## 6. 已完成的验证
+
+| 场景 | 结果 |
+|---|---|
+| 正常流式对话 `opencode run -m matrixllm/claude-fable-5-1` | 输出 FINAL_OK / PLUGIN_OK |
+| 工具调用多轮（bash 工具，tools=25） | 第一轮流式吐出 tool_calls → 执行 → msgs=4 第二轮正常返回 TOOL_ROUND_OK |
+| 参数过滤（直接 stub 调用 wrapper） | metadata/store/providerOptions/cache_control 全被丢弃，200 成功 |
+| 400 InvalidParameter（stub 首包 400） | 落盘 1 份 req-*.json → 最小字段重试 1 次 → 200；retryBodyKeys=[model,messages,stream,max_tokens] |
+| 非流式 refusal（stub） | 判定 refusal → 自动降级到 claude-fable-5 → 返回 fallback ok |
+| 流式 refusal（stub 首 chunk refusal） | 预读阶段判定 → cancel → 降级 → 返回 fallback stream ok |
+| matrixllm key 失效（真实 403）×2 + Aliyun 正常 | 2 次 403 → Aliyun 接管 → 正常回答 FALLBACK_OK |
+| matrixllm key + ALIYUN_TOKEN 全部失效 | 恰好 3 次尝试（主 + 2 降级）后抛出一次 Error，**无重试风暴** |
+
+耗时对照：本机 opencode 启动/会话建链本身约 60s（用 Aliyun 模型直连同样 1m07s），
+插件预读只增加 0~2s（首 chunk 到达即转发），不是瓶颈。
+
+## 7. 需要注意的点
+
+- 流式预读会等"第一个有效增量"再返回，首 token 延迟约等于上游首 token 延迟，不额外增加。
+- 若以后要换降级模型或加第三级，只改文件顶部常量
+  (MATRIX_FALLBACK_MODEL / ALIYUN_MODEL / DEFAULT_*_BASE) 与 buildTargets 即可。
+- Aliyun 降级目标在 `ALIYUN_TOKEN` / `DASHSCOPE_API_KEY` 都为空时会被跳过并写日志。
+- 排障入口：`tail -f /root/.config/opencode/matrixllm-debug/plugin.log`；
+  400 现场：`ls -t /root/.config/opencode/matrixllm-debug/req-*.json | head -1`。

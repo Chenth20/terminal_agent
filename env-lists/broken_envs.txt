@@ -1,0 +1,4 @@
+cth-th-move-a-saas-tenant-to-a-compliant-region@1.1.0	broken_known	module_shadowing: 工作区 /app/platform.py 抢先于 stdlib platform，harness runner 在 /app 启动时 import 到它 → psycopg2 缺失崩溃
+cth-th-multi-model-gpu-inference-capacity-admission-tuning@1.1.0	broken_known	sandbox_pending: 平台起不了沙箱（创建超时，lastManagerStatus=Pending），3 模型 6 次全失败
+cth-th-onboard-a-heterogeneous-vendor-fleet-into-open-rmf@1.1.0	broken_known	reward_timeout: 评分 test.sh 执行超过 2h（exec_command context deadline），3 模型 6 次全 TIMEOUT
+cth-th-scan-dft-integration-and-atpg-coverage-closure@1.1.0	broken_known	missing_ca: 镜像缺 /etc/ssl/certs/ca-certificates.crt，curl(77) 装不上 envd，5h 后 TIMEOUT

@@ -1,0 +1,84 @@
+{
+ "runtime": {
+  "type": "runner",
+  "uri": "uploads/261018/348480e2a7a1d724/pkg/"
+ },
+ "agent": {
+  "delivery": "builtin",
+  "entrypoint": "",
+  "env": {
+   "TERMINUS_GATEWAY_RETRY_ATTEMPTS": "6",
+   "TERMINUS_MODEL_CONTEXT_LIMIT": "262144",
+   "TERMINUS_PROACTIVE_SUMMARIZATION_THRESHOLD": "65536",
+   "TERMINUS_REASONING_EFFORT": "max",
+   "TERMINUS_SEPARATE_REASONING": "true",
+   "TERMINUS_TEMPERATURE": "1.0",
+   "TERMINUS_TOP_K": "50",
+   "TERMINUS_TOP_P": "0.95",
+   "TERMINUS_STREAM": "true"
+  }
+ },
+ "io_contract": {
+  "output_file": "$ARENA_OUTPUT_DIR/harness_result.json",
+  "artifact_globs": [
+   "$ARENA_OUTPUT_DIR/trajectory.jsonl",
+   "$ARENA_ATTEMPT_DIR/**/*"
+  ]
+ },
+ "resource_spec": {
+  "cpu": "4",
+  "memory": "8Gi",
+  "disk": "50Gi"
+ },
+ "ttl_seconds": 14400,
+ "capabilities": [
+  "bundled-python-3.13-glibc-2.17",
+  "bundled-tmux-3.4-glibc-2.28",
+  "explicit-model-context-limit",
+  "gateway-backoff-retry",
+  "interleaved-thinking",
+  "native-runner",
+  "optional-json-object-response-format",
+  "partial-trajectory-on-agent-error",
+  "partial-trajectory-on-timeout",
+  "proactive-context-headroom",
+  "resilient-material-localization",
+  "reward-on-incomplete-trajectory",
+  "reward-service-lifecycle",
+  "streaming-chat-completions",
+  "supervised-agent-deadline",
+  "task-runtime-isolation",
+  "terminal-bench-2.1",
+  "terminus-2"
+ ],
+ "metadata": {
+  "app_archive_sha256": "a6ae0fc94b71e33eeb76260e99a7820a727a4086a8faa0f27c052b72d08d459e",
+  "compatibility": "controller uses bundled Python 3.13; task tmux shells restore the image PATH/Python/library environment; incompatible image tmux falls back to tmux 3.4 requiring at most glibc 2.28",
+  "completion_contract": "always export a valid trajectory after normal Agent return; on a supervised timeout or Agent error export partial trajectory when available so the failure remains diagnosable",
+  "context_headroom_contract": "keep the model's real 262144-token registration and trigger Harbor summarization with 65536 estimated tokens free, protecting against custom-model tokenizer undercount and output headroom exhaustion",
+  "deadline_contract": "run Terminus as a supervised child process; terminate the child process group 60 seconds before the platform Agent deadline so Harness can preserve artifacts and return before the outer runner kill",
+  "gateway_retry_contract": "six jittered exponential retries per Terminus request, with LiteLLM nested retries disabled",
+  "harbor_commit": "0348989adffbb43bf0b410fd36197333239633f1",
+  "harbor_describe": "v0.20.0-58-g0348989a",
+  "inference_contract": "temperature=1.0, top_p=0.95, top_k=50, separate_reasoning=true, reasoning_effort=max, interleaved_thinking=true, model_context_limit=262144, proactive_summarization_threshold=65536, no artificial max_turns",
+  "json_response_contract": "TERMINUS_FORCE_JSON_OBJECT=true adds OpenAI response_format=json_object for models whose serving chat template otherwise emits non-Terminus tool-call markup; disabled by default",
+  "litellm_version": "1.93.0",
+  "material_localization_contract": "package application code as one archive; retry and localize Python, dependencies, application, and query before imports while retaining arca_envd for shared reward",
+  "provider_contract": "ANTHROPIC_* model registry variables select LiteLLM anthropic provider and add the EnvArena Authorization bearer header; explicit LLM_* or OPENAI_* variables select OpenAI",
+  "runner_bootstrap_sha256": "d67f548e292981e471e12b68f4085b52f9e46b39fb6a646005a30d6633a90622",
+  "runtime_manifest_sha256": "f211d2010e502c4efcbe3cf7f2baf4b4bf5ac64529426d4cba4aeca77c9486fd",
+  "runtime_upload_bytes": "89071324",
+  "runtime_upload_files": "9",
+  "service_lifecycle": "the final Terminus tmux session is retained until Reward so task-started services remain reachable",
+  "supervisor_sha256": "96be46dbf954402e0d58e1986b94b607e0480e5cfcfbd5ca3707a672da601c8d",
+  "terminus_runner_sha256": "c9f33104f11500020c444d94117295e950bc44ae06bade88ebcc008238edd9a2",
+  "terminus_settings_sha256": "2b7ff1a4f61209591b4a38371d7ef6c2be7c7f1f8ecb1e07503768c35f1d140f",
+  "terminus_version": "2.0.0",
+  "tmux_selection_contract": "feature-probe new-session -e on an isolated socket; use packaged tmux when the image binary lacks required environment support",
+  "workspace_contract": "prefer authoritative ARENA_AGENT_WORKDIR for image Envs; fall back to ARENA_WORKSPACE for files Envs",
+  "base_harness": "terminus-2-tb21@1.0.12",
+  "owner": "chentinhong.cth",
+  "change": "1.0.0: identical to terminus-2-tb21@1.0.12 (same runner, python, site-packages, tmux, env, resource_spec, ttl) except harbor/llms/lite_llm.py: chat completions are requested with stream=True and reassembled with litellm.stream_chunk_builder, so long xhigh generations keep bytes flowing and no longer hit the ~900s sandbox egress cutoff (502 from :7002). TERMINUS_STREAM=false restores the non-streaming call.",
+  "streaming_contract": "stream=True + stream_options.include_usage; response reassembled to the same ModelResponse (content, reasoning_content, usage, finish_reason)"
+ }
+}

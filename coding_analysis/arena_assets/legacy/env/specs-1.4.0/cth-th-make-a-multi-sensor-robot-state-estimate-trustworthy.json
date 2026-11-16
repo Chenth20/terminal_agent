@@ -1,0 +1,48 @@
+{
+ "query": {
+  "uri": "uploads/261021/9a0fa4657584f1dc/instruction.md",
+  "media_type": "text/markdown"
+ },
+ "bundle": {
+  "uri": ""
+ },
+ "oracle": {
+  "uri": "uploads/261101/1978368cd3caaba4/oracle/",
+  "media_type": "application/vnd.envarena.oracle.directory"
+ },
+ "oracle_schema": "terminal-bench.2.0.v1",
+ "runtime": {
+  "kind": "image",
+  "image": "reg.antgroup-inc.cn/areal_agent/terminalhorizon:make-a-multi-sensor-robot-state-estimate-trustworthy-main-268072c9883c-rt1",
+  "profile": "image_networked"
+ },
+ "timeout_seconds": 21000,
+ "workdir": "/app",
+ "hooks": {
+  "setup_script": "mkdir -p /home/admin/logs; if ! grep -q ':2CBC 00000000:0000 0A' /proc/net/tcp 2>/dev/null; then   (setsid nohup /home/admin/bin/arca_envd serve --addr :11452 >>/home/admin/logs/arca_envd.stdout.log 2>&1 </dev/null &); sleep 3; fi; echo \"[th-setup] envd listen: $(grep -c ':2CBC 00000000:0000 0A' /proc/net/tcp)\"; exit 0"
+ },
+ "timeouts": {
+  "setup_seconds": 900,
+  "agent_seconds": 18000,
+  "collect_seconds": 300
+ },
+ "tags": [
+  "source:terminal-horizon",
+  "domain:terminal",
+  "chen",
+  "th-rest"
+ ],
+ "resource_hints": {
+  "cpu": "8",
+  "memory": "16384Mi",
+  "disk": "10240Mi"
+ },
+ "metadata": {
+  "allow_internet": "True",
+  "category": "Robotics and autonomous systems",
+  "image": "reg.antgroup-inc.cn/areal_agent/terminalhorizon:make-a-multi-sensor-robot-state-estimate-trustworthy-main-268072c9883c-rt1",
+  "subcategory": "Robot calibration, perception and localization",
+  "task_id": "make-a-multi-sensor-robot-state-estimate-trustworthy",
+  "cth_1_4_0": "tests/test.sh wraps the byte-identical original (tests/test_orig.sh) in `timeout -k 60 1500`; reward phase hung to the 7200s ARCA exec timeout in cth-thfull14-dsv41-2610270211"
+ }
+}

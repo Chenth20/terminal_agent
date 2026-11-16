@@ -1,0 +1,161 @@
+env_key	causes	orig_version	rerun_version	action	fix
+cth-th-acknowledgement-aware-auv-feature-tracking	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-activate-a-provenance-preserving-spatiotemporal-asset-catalog	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-adaptive-neutron-diffraction-campaign-control	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-adaptive-privacy-budgeting-for-a-multi-analyst-sql-query-gateway	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-adaptive-robotic-synthesis-for-a-qualified-materials-phase-map	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-add-a-first-class-resumable-backfill-step-to-prisma-migrate	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-adjudicate-and-settle-multi-party-subrogation-recoveries	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-asic-physical-implementation-closure-across-timing-power-routing-and-sig	tmux-killed rc=2	1.2.0	1.2.0	rerun	harness 16Gi (1.7.96)
+cth-th-bounded-food-lot-recall-containment-through-lot-genealogy	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-bounded-kafka-replay-for-downstream-state-recovery	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-brownfield-infrastructure-ownership-reconciliation	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-build-a-history-governed-durable-workflow-engine	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-build-a-point-in-time-correct-event-time-join-under-partition-skew	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-build-a-provenance-preserving-identity-aware-email-archive-for-scholarly	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-build-a-queryable-historical-dictionary-citation-corpus	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-build-a-recovering-sequenced-market-data-feed-handler	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-build-a-rename-aware-interruption-safe-filesystem-synchronizer	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-build-a-stateful-checkout-web-product-from-user-requirements	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-build-an-annotator-aware-active-learning-loop-for-subjective-nlp	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-build-an-offline-first-interactive-geospatial-layer-explorer	tmux-killed rc=-9	1.2.0	1.2.0	rerun	harness 16Gi (1.7.96)
+cth-th-build-and-validate-a-hybrid-sparse-dense-retrieval-pipeline	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-calibrate-an-fmi-ssp-industrial-twin-for-maintenance-decisions	tmux-killed rc=1	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-calibrate-fair-share-scheduling-for-a-heterogeneous-hpc-cluster	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-carry-an-rpm-library-abi-transition-across-subpackages-and-consumers	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-close-a-digital-block-through-timing-power-and-routability-aware-physica	ca-broken;nonflat-fail	1.2.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-close-ready-cash-multi-account-bank-feed-reconciliation-in-a-plain-text	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-close-the-books-erp-subledger-to-general-ledger-reconciliation	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-close-the-loop-on-a-serialized-warranty-repair	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-commission-a-calibrated-ros-2-robot-workcell	reward-hang	1.2.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-commission-a-closed-loop-hvac-supervisory-control-sequence	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-commission-a-generation-aware-systemd-release-role-ev21	tmux-killed rc=1	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-commission-a-roaming-capable-enterprise-wlan-from-the-linux-wireless-pla	??:     context, trajectory = anyio.run(_run_agent, settings) |                           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^ |   File "/tmp/envarena-terminus2-runtime.509604/site-packages/py313/anyio/_core/_	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-conflate-heterogeneous-road-data-into-a-behaviorally-validated-routable	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-consent-bound-web-data-flow-reconciliation	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-coordinate-a-live-kafka-event-contract-migration-across-mixed-consumers	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-coordinate-a-safe-kafka-event-contract-release	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-cross-border-indirect-tax-filing-close-and-submission-reconciliation	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-cross-engine-lakehouse-table-compatibility-engineering	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-curate-and-publish-a-queryable-stac-catalog-for-earth-observation-assets	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-cutover-safe-modernization-of-a-live-lakehouse-table	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-delayed-mode-quality-control-and-publication-of-a-recovered-ocean-buoy-s	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-engineer-and-qualify-mpi-checkpoint-restart-for-slurm-preemption	agent-5h-haslog(332);reward-preclean-502	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-engineer-tenant-fair-admission-control-for-a-shared-http-api	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-establish-a-defensible-multi-run-quantitative-proteomics-result	ca-broken;nonflat-fail	1.2.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-establish-causally-correct-time-in-an-hla-federation	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-evidence-linked-suspicious-activity-reporting-operations	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-evolve-postgresql-driver-pipeline-semantics-across-the-wire-api-boundary	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-evpn-vxlan-control-to-data-plane-interoperability-qualification	agent-5h-haslog(739)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-execute-a-health-gated-ansible-rolling-release-across-heterogeneous-linu	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-feedback-driven-flink-rescale-for-event-time-windows	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-harden-and-operate-multi-as-bgp-policy-with-rpki-validation	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-holdover-safe-airport-deicing-and-surface-flow	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-implement-a-durable-idempotent-inventory-reservation-service	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-implement-a-durable-offline-first-crdt-document-sync-layer	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-implement-a-multi-vendor-order-and-settlement-product	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-implement-a-type-solver-rule-and-diagnostics-in-rustc	arca-sandbox	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-implement-cancellation-safe-structured-concurrency-in-tokio	reward-hang	1.1.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-implement-retroactive-corrections-in-a-bitemporal-event-sourced-ledger	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-integrate-a-provenance-preserving-astronomical-alert-broker	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-integrate-and-qualify-an-openpbs-queue-and-reservation-policy	agent-5h-haslog(331)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-integrate-and-validate-a-privacy-preserving-measurement-task	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-integrate-heterogeneous-workloads-with-consul-health-aware-service-disco	llm-gateway	1.1.0	1.4.0	rerun	env@1.4.0 (setup hook pins envarena-prod.alipay.com in /etc/hosts)
+cth-th-integrate-slurm-accounting-and-fair-share-scheduling-for-mixed-workloads	agent-5h-haslog(331);tmux-killed rc=-9	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-interdomain-bgp-traffic-engineering-and-capacity-plan-under-failure	agent-5h-haslog(644)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-live-safe-ingress-to-gateway-api-migration-and-traffic-qualification	agent-5h-haslog(740)	1.2.0	1.2.0	rerun	transient (arca/5h/gateway); retry
+cth-th-machine-checked-refinement-of-a-concurrent-replicated-service	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-maintain-an-online-fraud-risk-model-under-delayed-evolving-feedback	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-make-a-broker-to-database-event-workflow-idempotent-under-recovery	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-make-a-linux-usb-host-driver-survive-power-and-hotplug-lifecycles	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-make-a-multi-sensor-robot-state-estimate-trustworthy	reward-hang	1.1.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-make-incremental-monorepo-builds-fast-without-making-them-wrong	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-make-recurring-caldav-scheduling-converge-across-independent-peers	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-make-recurring-product-access-tell-the-truth	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-modernize-a-legacy-python-django-application-across-compatibility-bounda	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-oci-distribution-compatibility-relay	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-onboard-a-heterogeneous-vendor-fleet-into-open-rmf	reward-hang;tmux-killed rc=-15	1.2.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-online-vitess-resharding-under-live-transactional-traffic	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-a-cdn-cache-and-origin-protection-path-under-changing-traffic	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-a-permission-aware-evaluated-rag-service	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-a-query-continuous-time-series-retention-lifecycle	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-operate-a-safe-staged-ota-rollout-for-an-intermittently-connected-edge-f	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-a-scylladb-cluster-to-reconcile-skewed-replicas-under-live-load	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-an-adaptive-api-abuse-mitigation-policy	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-an-adaptive-ecological-restoration-monitoring-round	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-an-adaptive-multiparty-webrtc-sfu	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-operate-cockroachdb-range-rebalancing-under-live-serializable-load	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-fair-distributed-api-admission-across-tenants	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-operate-tikv-hot-region-scheduling-under-concurrent-load	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-plan-and-operate-a-resource-and-data-aware-scientific-workflow-on-an-hpc	tmux-killed rc=1	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-promote-a-cloud-foundry-revision-through-a-routed-service-graph	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-promote-a-signed-multi-architecture-oci-release-without-breaking-provena	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-qualify-a-closed-loop-ros-2-mobile-robot-autonomy-stack	reward-hang	1.1.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-qualify-a-knative-event-path-under-bursty-load	agent-5h-haslog(836);tmux-killed rc=-9	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-qualify-a-linux-ptp-boundary-clock-against-independent-peers	agent-5h-haslog(644)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-qualify-a-low-latency-adaptive-streaming-presentation	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-qualify-a-multi-sensor-robot-calibration-for-localization	reward-hang	1.1.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-qualify-a-provenance-preserving-rag-index-refresh	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-qualify-an-application-consistent-kubernetes-disaster-recovery-restore	agent-5h-haslog(740)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-qualify-and-fail-over-a-replicated-object-storage-site	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-qualify-bgp-graceful-restart-and-enhanced-route-refresh-across-heterogen	agent-5h-haslog(644)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-qualify-dual-stack-dhcp-ha-lease-convergence	agent-5h-haslog(332);agent-5h-haslog(642)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-qualify-nfsv4-stateful-recovery-across-failover-and-partitions	agent-5h-haslog(644)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-qualify-refresh-only-ldap-syncrepl-from-389-directory-server-to-openldap	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-qualify-sctp-multihoming-failover-between-independent-peers	tmux-killed rc=-9	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-qualify-sip-proxy-paths-for-stateful-transaction-and-dialog-interoperabi	llm-gateway	1.1.0	1.4.0	rerun	env@1.4.0 (setup hook pins envarena-prod.alipay.com in /etc/hosts)
+cth-th-qualify-wireguard-roaming-and-rekey-interoperability-across-implementati	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-reconcile-a-federated-application-s-identity-lifecycle	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconcile-and-run-an-insured-catastrophe-portfolio-risk-model	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconcile-cold-chain-excursions-and-safely-disposition-affected-lots	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconcile-e-logbook-landings-before-registering-a-quota-transfer	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconcile-kubernetes-api-priority-and-fairness-for-shared-control-plane	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-reconcile-road-networks-into-a-routable-linear-referenced-base	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconcile-the-inpatient-medication-use-ledger	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconcile-the-wildfire-incident-operating-picture-for-the-next-operation	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconcile-versioned-object-retention-and-lineage-safely	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconstruct-a-curated-photo-video-library-across-catalogs-and-sidecars	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-reconstructing-scientific-workflow-provenance-from-native-run-evidence	ca-broken;nonflat-fail	1.2.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-recover-a-corrupted-innodb-instance-across-pages-redo-and-logical-data	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-recover-a-minio-replica-after-peer-data-loss	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-recover-a-versioned-erasure-coded-object-store	tmux-killed rc=-9	1.2.0	1.2.0	rerun	harness 16Gi (1.7.96)
+cth-th-recover-and-qualify-a-multisite-semiconductor-production-test-program	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-recover-and-qualify-a-transactional-outbox-delivery-lineage	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-recover-replicated-broker-partitions-without-losing-backlog-integrity	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-recovering-a-partially-written-audiovisual-container	assets-too-large	1.1.0	-	EXCLUDED	oracle 83MB > shared-sandbox delivery limit; slim oracle needed
+cth-th-release-a-kubernetes-compatible-helm-chart-library-across-its-consumer-g	tmux-killed rc=1	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-release-a-queryable-data-lineage-graph-for-change-impact-decisions	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-release-a-zero-downtime-search-index-generation-under-live-ingestion	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-repair-and-release-a-nix-derivation-across-its-consumer-closure	arca-sandbox	1.2.0	1.2.0	rerun	transient (arca/5h/gateway); retry
+cth-th-repair-cross-hop-http-2-streaming-backpressure-in-a-reverse-proxy	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-repairing-a-jit-runtime-s-optimized-frame-contract-across-moving-gc-and	arca-sandbox	1.2.0	1.2.0	rerun	transient (arca/5h/gateway); retry
+cth-th-replan-a-cooperative-robot-inspection-mission-through-lost-links-and-low	reward-hang	1.1.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-reproduce-a-relative-binding-free-energy-campaign	arca-sandbox	1.2.0	1.2.0	rerun	transient (arca/5h/gateway); retry
+cth-th-reproduce-and-eliminate-go-service-contention-under-representative-load	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-reproduce-and-remediate-a-linux-packet-path-performance-regression	runner-sigterm	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-reproduce-congestion-control-claims-in-an-executable-packet-testbed	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-resilient-event-time-join-migration-across-savepoint-rescaling	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-resolve-an-iso-20022-payment-exception-across-the-return-chain	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-restore-mvcc-vacuum-health-across-a-postgresql-replication-horizon	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-retire-a-legacy-event-driven-service-without-stranding-its-dependents	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-roll-a-versioned-event-contract-through-real-producers-and-consumers	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-roll-out-and-verify-multi-as-bgp-routing-policy	agent-5h-haslog(643)	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-safely-rebalance-kafka-partition-replicas-under-live-producer-and-consum	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-safely-replace-an-etcd-raft-member-during-live-writes	reward-hang	1.1.0	1.4.0	rerun	env@1.4.0 (test.sh wrapped in timeout 1500)
+cth-th-safety-gated-provenance-preserving-replay-of-a-mobile-robot-mission	tmux-killed rc=-9	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-scan-dft-integration-and-atpg-coverage-closure	ca-broken;nonflat-fail	1.2.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-second-life-battery-gateway-qualification	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-stabilize-a-stateful-rss-atom-intake-service-across-feed-evolution	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-support-case-family-reconciliation-under-review-budget	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-three-way-note-conflict-reconciliation-in-a-mature-syncing-app	arca-sandbox	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-tombstone-aware-cassandra-replica-convergence-repair	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-transition-a-service-mesh-dependency-to-explicit-authenticated-traffic-p	agent-5h-haslog(332)	1.2.0	1.2.0	rerun	transient (arca/5h/gateway); retry
+cth-th-tune-a-shared-linux-host-for-latency-and-throughput	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-tune-a-solrcloud-faceted-search-collection-under-workload	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-tune-a-timescaledb-telemetry-hypertable-for-late-arriving-data	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-validate-a-stability-aware-atmospheric-dispersion-model-against-tracer-o	ca-broken;nonflat-fail	1.2.0	-	EXCLUDED	image rebuild w/ ca-certificates needed
+cth-th-validate-an-embedded-firmware-vulnerability-through-rehosting	tmux-killed rc=-15	1.1.0	1.1.0	rerun	harness 16Gi (1.7.96)
+cth-th-workload-aware-resharding-of-a-skewed-mongodb-collection	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-zero-copy-arrow-interchange-for-a-mature-dataframe-library	arca-sandbox	1.1.0	1.1.0	rerun	transient (arca/5h/gateway); retry
+cth-th-zero-disruption-migration-of-versioned-web-sessions	flat;nonflat-fail	1.2.0	1.3.0	rerun	env@1.3.0 (flat setup hook)
+cth-th-zero-downtime-full-text-search-generation-migration	ca-broken;nonflat-fail	1.1.0	-	EXCLUDED	image rebuild w/ ca-certificates needed

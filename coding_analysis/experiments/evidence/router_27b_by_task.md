@@ -1,0 +1,97 @@
+# qwen3-8-27b-router-xhigh × terminus-2-tb21@1.0.12 × tb21-terminus2-full (8 samples)
+
+> **归档说明（11-06）**：这是 API 模型（qwen3-8-27b-router-xhigh）的逐 env 明细，仅作教师能力参照，未参与任何 4B 结论。
+
+job `qwen3-8-27b-router-xhigh-chen-tb21-full-2610151818-2610151019` — snapshot 2026-10-16T05:42:51Z, status RUNNING
+
+| env | acc | done | harness_failed | unfinished |
+|---|---|---|---|---|
+| tb2-build-cython-ext | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-build-pmars | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-circuit-fibsqrt | 1.000 (2/2) | 2 | 6 | 0 |
+| tb2-cobol-modernization | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-code-from-image | 1.000 (7/7) | 7 | 1 | 0 |
+| tb2-custom-memory-heap-crash | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-feal-differential-cryptanalysis | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-fix-code-vulnerability | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-fix-git | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-git-leak-recovery | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-git-multibranch | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-hf-model-inference | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-kv-store-grpc | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-llm-inference-batching-scheduler | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-log-summary-date-ranges | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-merge-diff-arc-agi-task | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-password-recovery | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-path-tracing | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-path-tracing-reverse | 1.000 (7/7) | 7 | 0 | 1 |
+| tb2-polyglot-c-py | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-qemu-startup | 1.000 (8/8) | 8 | 0 | 0 |
+| tb2-break-filter-js-from-html | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-caffe-cifar-10 | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-compile-compcert | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-constraints-scheduling | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-distribution-search | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-feal-linear-cryptanalysis | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-financial-document-processor | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-fix-ocaml-gc | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-headless-terminal | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-largest-eigenval | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-modernize-scientific-stack | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-nginx-request-logging | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-openssl-selfsigned-cert | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-overfull-hbox | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-polyglot-rust-c | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-portfolio-optimization | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-pypi-server | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-regex-log | 0.875 (7/8) | 8 | 0 | 0 |
+| tb2-reshard-c4-data | 0.857 (6/7) | 7 | 0 | 1 |
+| tb2-rstan-to-pystan | 0.833 (5/6) | 6 | 0 | 2 |
+| tb2-bn-fit-modify | 0.750 (6/8) | 8 | 0 | 0 |
+| tb2-build-pov-ray | 0.750 (6/8) | 8 | 0 | 0 |
+| tb2-count-dataset-tokens | 0.750 (6/8) | 8 | 0 | 0 |
+| tb2-crack-7z-hash | 0.750 (6/8) | 8 | 0 | 0 |
+| tb2-db-wal-recovery | 0.750 (6/8) | 8 | 0 | 0 |
+| tb2-large-scale-text-editing | 0.750 (6/8) | 8 | 0 | 0 |
+| tb2-qemu-alpine-ssh | 0.714 (5/7) | 7 | 0 | 1 |
+| tb2-extract-elf | 0.625 (5/8) | 8 | 0 | 0 |
+| tb2-mcmc-sampling-stan | 0.625 (5/8) | 8 | 0 | 0 |
+| tb2-multi-source-data-merger | 0.625 (5/8) | 8 | 0 | 0 |
+| tb2-pytorch-model-recovery | 0.625 (5/8) | 8 | 0 | 0 |
+| tb2-adaptive-rejection-sampler | 0.500 (2/4) | 4 | 4 | 0 |
+| tb2-chess-best-move | 0.500 (4/8) | 8 | 0 | 0 |
+| tb2-configure-git-webserver | 0.500 (4/8) | 8 | 0 | 0 |
+| tb2-extract-moves-from-video | 0.500 (4/8) | 8 | 0 | 0 |
+| tb2-mailman | 0.500 (4/8) | 8 | 0 | 0 |
+| tb2-mteb-leaderboard | 0.500 (4/8) | 8 | 0 | 0 |
+| tb2-protein-assembly | 0.500 (4/8) | 8 | 0 | 0 |
+| tb2-pytorch-model-cli | 0.500 (4/8) | 8 | 0 | 0 |
+| tb2-sam-cell-seg | 0.400 (2/5) | 5 | 0 | 3 |
+| tb2-cancel-async-tasks | 0.250 (2/8) | 8 | 0 | 0 |
+| tb2-dna-insert | 0.250 (2/8) | 8 | 0 | 0 |
+| tb2-gcode-to-text | 0.250 (2/8) | 8 | 0 | 0 |
+| tb2-install-windows-3.11 | 0.250 (2/8) | 8 | 0 | 0 |
+| tb2-make-mips-interpreter | 0.250 (2/8) | 8 | 0 | 0 |
+| tb2-model-extraction-relu-logits | 0.250 (2/8) | 8 | 0 | 0 |
+| tb2-query-optimize | 0.250 (2/8) | 8 | 0 | 0 |
+| tb2-gpt2-codegolf | 0.143 (1/7) | 7 | 1 | 0 |
+| tb2-make-doom-for-mips | 0.125 (1/8) | 8 | 0 | 0 |
+| tb2-mteb-retrieve | 0.125 (1/8) | 8 | 0 | 0 |
+| tb2-raman-fitting | 0.125 (1/8) | 8 | 0 | 0 |
+| tb2-dna-assembly | 0.000 (0/8) | 8 | 0 | 0 |
+| tb2-filter-js-from-html | 0.000 (0/8) | 8 | 0 | 0 |
+| tb2-prove-plus-comm | 0.000 (0/8) | 8 | 0 | 0 |
+| tb2-regex-chess | - (0/0) | 0 | 0 | 8 |
+| tb2-sanitize-git-repo | 0.000 (0/8) | 8 | 0 | 0 |
+| tb2-schemelike-metacircular-eval | - (0/0) | 0 | 0 | 8 |
+| tb2-sparql-university | - (0/0) | 0 | 0 | 8 |
+| tb2-sqlite-db-truncate | - (0/0) | 0 | 0 | 8 |
+| tb2-sqlite-with-gcov | - (0/0) | 0 | 0 | 8 |
+| tb2-torch-pipeline-parallelism | - (0/0) | 0 | 0 | 8 |
+| tb2-torch-tensor-parallelism | - (0/0) | 0 | 0 | 8 |
+| tb2-train-fasttext | - (0/0) | 0 | 0 | 8 |
+| tb2-tune-mjcf | - (0/0) | 0 | 0 | 8 |
+| tb2-video-processing | - (0/0) | 0 | 0 | 8 |
+| tb2-vulnerable-secret | - (0/0) | 0 | 0 | 8 |
+| tb2-winning-avg-corewars | - (0/0) | 0 | 0 | 8 |
+| tb2-write-compressor | - (0/0) | 0 | 0 | 8 |

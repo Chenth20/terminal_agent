@@ -1,0 +1,102 @@
+{
+ "runtime": {
+  "type": "runner",
+  "uri": "uploads/261030/b5776b45981e0f36/pkg/"
+ },
+ "agent": {
+  "delivery": "builtin",
+  "entrypoint": "",
+  "env": {
+   "TERMINUS_GATEWAY_RETRY_ATTEMPTS": "6",
+   "TERMINUS_MAX_TURNS": "512",
+   "TERMINUS_MODEL_CONTEXT_LIMIT": "98304",
+   "TERMINUS_PROACTIVE_SUMMARIZATION_THRESHOLD": "1024",
+   "TERMINUS_REASONING_EFFORT": "max",
+   "TERMINUS_SANDBOX_ENV_HF_HUB_DISABLE_XET": "1",
+   "TERMINUS_SANDBOX_ENV_HF_HUB_DOWNLOAD_TIMEOUT": "120",
+   "TERMINUS_SANDBOX_ENV_HF_HUB_ETAG_TIMEOUT": "60",
+   "TERMINUS_SANDBOX_ENV_PIP_INDEX_URL": "https://mirrors.aliyun.com/pypi/simple/",
+   "TERMINUS_SANDBOX_ENV_PIP_RETRIES": "10",
+   "TERMINUS_SANDBOX_ENV_PIP_TIMEOUT": "60",
+   "TERMINUS_SANDBOX_ENV_UV_CONCURRENT_DOWNLOADS": "4",
+   "TERMINUS_SANDBOX_ENV_UV_DEFAULT_INDEX": "https://mirrors.aliyun.com/pypi/simple/",
+   "TERMINUS_SANDBOX_ENV_UV_HTTP_RETRIES": "6",
+   "TERMINUS_SANDBOX_ENV_UV_HTTP_TIMEOUT": "600",
+   "TERMINUS_SANDBOX_ENV_UV_INDEX_URL": "https://mirrors.aliyun.com/pypi/simple/",
+   "TERMINUS_SEPARATE_REASONING": "true",
+   "TERMINUS_STREAM": "true",
+   "TERMINUS_TEMPERATURE": "1.0",
+   "TERMINUS_TOKEN_COUNT_MODE": "usage",
+   "TERMINUS_TOP_K": "50",
+   "TERMINUS_TOP_P": "0.95"
+  }
+ },
+ "io_contract": {
+  "output_file": "$ARENA_OUTPUT_DIR/harness_result.json",
+  "artifact_globs": [
+   "$ARENA_OUTPUT_DIR/trajectory.jsonl",
+   "$ARENA_ATTEMPT_DIR/**/*"
+  ]
+ },
+ "resource_spec": {
+  "cpu": "4",
+  "memory": "16Gi",
+  "disk": "50Gi"
+ },
+ "ttl_seconds": 14400,
+ "capabilities": [
+  "bundled-python-3.13-glibc-2.17",
+  "bundled-tmux-3.4-glibc-2.28",
+  "explicit-model-context-limit",
+  "gateway-backoff-retry",
+  "interleaved-thinking",
+  "native-runner",
+  "optional-json-object-response-format",
+  "partial-trajectory-on-agent-error",
+  "partial-trajectory-on-timeout",
+  "proactive-context-headroom",
+  "pypi-mirror-aliyun",
+  "resilient-material-localization",
+  "reward-on-incomplete-trajectory",
+  "reward-service-lifecycle",
+  "sandbox-env-passthrough",
+  "streaming-chat-completions",
+  "supervised-agent-deadline",
+  "task-runtime-isolation",
+  "terminal-bench-2.1",
+  "terminus-2"
+ ],
+ "metadata": {
+  "app_archive_sha256": "beb1801db0ff9381df4fcb1e5877a5f5668ec09290f6059431c5d1125b51fb4c",
+  "compatibility": "controller uses bundled Python 3.13; task tmux shells restore the image PATH/Python/library environment; incompatible image tmux falls back to tmux 3.4 requiring at most glibc 2.28",
+  "completion_contract": "always export a valid trajectory after normal Agent return; on a supervised timeout or Agent error export partial trajectory when available so the failure remains diagnosable",
+  "context_headroom_contract": "compaction-sweep tier 96k: TERMINUS_MODEL_CONTEXT_LIMIT=98304 is the compaction trigger point, not the model's real window (both qwen3-8-flash and dsv41-flash accept >=520k prompts); summarization fires when provider-reported (prompt+completion) of the last call exceeds 97280",
+  "deadline_contract": "run Terminus as a supervised child process; terminate the child process group 60 seconds before the platform Agent deadline so Harness can preserve artifacts and return before the outer runner kill",
+  "gateway_retry_contract": "six jittered exponential retries per Terminus request, with LiteLLM nested retries disabled",
+  "harbor_commit": "0348989adffbb43bf0b410fd36197333239633f1",
+  "harbor_describe": "v0.20.0-58-g0348989a",
+  "inference_contract": "temperature=1.0, top_p=0.95, top_k=50, separate_reasoning=true, reasoning_effort=max, interleaved_thinking=true, model_context_limit=98304, proactive_summarization_threshold=1024, token_count_mode=usage, max_turns=512",
+  "json_response_contract": "TERMINUS_FORCE_JSON_OBJECT=true adds OpenAI response_format=json_object for models whose serving chat template otherwise emits non-Terminus tool-call markup; disabled by default",
+  "litellm_version": "1.93.0",
+  "material_localization_contract": "package application code as one archive; retry and localize Python, dependencies, application, and query before imports while retaining arca_envd for shared reward",
+  "provider_contract": "ANTHROPIC_* model registry variables select LiteLLM anthropic provider and add the EnvArena Authorization bearer header; explicit LLM_* or OPENAI_* variables select OpenAI",
+  "runner_bootstrap_sha256": "d67f548e292981e471e12b68f4085b52f9e46b39fb6a646005a30d6633a90622",
+  "runtime_manifest_sha256": "ca1a691ca4b54730fc6465727d9cf5331a3377ab4a0054ae5effd417b6a2ebab",
+  "runtime_upload_bytes": "89058871",
+  "runtime_upload_files": "9",
+  "service_lifecycle": "the final Terminus tmux session is retained until Reward so task-started services remain reachable",
+  "supervisor_sha256": "96be46dbf954402e0d58e1986b94b607e0480e5cfcfbd5ca3707a672da601c8d",
+  "terminus_runner_sha256": "c9f33104f11500020c444d94117295e950bc44ae06bade88ebcc008238edd9a2",
+  "terminus_settings_sha256": "2b7ff1a4f61209591b4a38371d7ef6c2be7c7f1f8ecb1e07503768c35f1d140f",
+  "terminus_version": "2.0.0",
+  "tmux_selection_contract": "feature-probe new-session -e on an isolated socket; use packaged tmux when the image binary lacks required environment support",
+  "workspace_contract": "prefer authoritative ARENA_AGENT_WORKDIR for image Envs; fall back to ARENA_WORKSPACE for files Envs",
+  "base_harness": "cth-terminus-2-stream@1.5.96",
+  "owner": "chentinhong.cth",
+  "change": "1.6.96: 1.5.96 + in the agent shell UV_HTTP_TIMEOUT 120->600, UV_CONCURRENT_DOWNLOADS=4, UV_HTTP_RETRIES=6 (large torch/nvidia wheels timed out at 120 s), HF_HUB_DISABLE_XET=1 + HF_HUB_DOWNLOAD_TIMEOUT=120 / HF_HUB_ETAG_TIMEOUT=60 (xet CAS server cas-server.xethub.hf.co returns 403 from the sandbox; plain HTTP download path works). Everything else identical to 1.5.96 (same pkg_v5 runtime, 96k trigger, max_turns 512, effort max, 16Gi).",
+  "streaming_contract": "stream=True + stream_options.include_usage; response reassembled to the same ModelResponse (content, reasoning_content, usage, finish_reason)",
+  "max_turns_contract": "TERMINUS_MAX_TURNS=512 -> Terminus2(max_turns=512, suppress_max_turns_warning=True); on reaching the cap the agent returns normally, trajectory and reward run as usual",
+  "token_count_contract": "TERMINUS_TOKEN_COUNT_MODE=usage: _count_total_tokens anchors on the provider's last usage (prompt_tokens+completion_tokens) and only estimates messages appended since; this makes the trigger follow the provider's real context (DeepSeek drops historical reasoning_content, which litellm.token_counter would otherwise count). estimate = legacy behaviour",
+  "sandbox_env_contract": "every agent.env key TERMINUS_SANDBOX_ENV_<NAME> becomes <NAME> in the agent's tmux shell (tmux new-session -e); explicit --index-url on the command line still wins (tb2-pypi-server uses localhost:8080); harness_result.raw.sandbox_env_keys records the injected names"
+ }
+}

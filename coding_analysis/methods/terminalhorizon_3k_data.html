@@ -1,0 +1,501 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>TerminalHorizon-3K 数据分析报告</title><style>
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;max-width:1180px;margin:0 auto;padding:24px 32px;color:#1f2328;line-height:1.6;background:#fff}
+h1{border-bottom:3px solid #0969da;padding-bottom:8px}h2{margin-top:44px;border-left:5px solid #0969da;padding-left:10px}h3{margin-top:28px}
+pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;padding:12px;overflow:auto;font-size:12px;line-height:1.45;max-height:520px;white-space:pre-wrap;word-break:break-all}
+pre.user{border-left:5px solid #2da44e}pre.asst{border-left:5px solid #8250df}
+code{background:#eef1f4;padding:1px 5px;border-radius:4px;font-size:12.5px}
+table{border-collapse:collapse;margin:10px 0}td,th{border:1px solid #d0d7de;padding:5px 12px;text-align:left;font-size:14px}th{background:#f6f8fa}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin:14px 0}
+.card{border:1px solid #d0d7de;border-radius:8px;padding:12px 14px;background:#fafbfc}.card .n{font-size:26px;font-weight:700;color:#0969da}.card .t{font-size:13px;color:#57606a}
+.hist{display:flex;align-items:flex-end;gap:8px;height:200px;padding:10px 0 0;border-bottom:1px solid #d0d7de}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.bar .fill{width:70%;background:#0969da;border-radius:3px 3px 0 0}
+.bar .v{font-size:12px;color:#333}.bar .l{font-size:11px;color:#57606a;margin-top:4px}
+.cap{font-size:12.5px;color:#57606a;margin:6px 0 16px}.hb{height:14px;background:#2da44e;border-radius:3px}
+.note{background:#fff8c5;border:1px solid #d4a72c;border-radius:6px;padding:10px 14px;margin:12px 0}
+.warn{background:#ffebe9;border:1px solid #ff8182;border-radius:6px;padding:10px 14px;margin:12px 0}
+.ok{background:#dafbe1;border:1px solid #4ac26b;border-radius:6px;padding:10px 14px;margin:12px 0}
+.muted{color:#8c959f;font-size:12px}.role{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600;margin-right:6px}
+.ru{background:#dafbe1;color:#116329}.ra{background:#fbefff;color:#6639ba}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0}.flow .b{border:1px solid #d0d7de;border-radius:6px;padding:6px 10px;font-size:13px;background:#fafbfc}.flow .ar{color:#8c959f}
+ul.two{columns:3;font-size:13.5px}
+details{margin:8px 0}summary{cursor:pointer;font-weight:600;color:#0969da}
+</style></head><body>
+<h1>TerminalHorizon-3K 轨迹数据分析报告</h1>
+<p class="muted">数据路径：<code>/storage/openpsi/users/chen/code_data/terminal_horizon/TerminalHorizon-3K/data/TerminalHorizon-3K-SFT.jsonl</code>（1.7 GB，2852 行）。
+统计口径：轨迹级统计基于全量 2852 条；token 统计基于随机 200 条样本、使用 Qwen3.5-35B-A3B tokenizer；assistant 回复内部结构统计基于随机 300 条样本（15,133 个 assistant turn）。</p>
+
+<h2>0. 一句话结论</h2>
+<div class="ok">
+这是一个<b>纯 Terminus-2 格式的单轮-多步终端 agent 轨迹集</b>：每条样本 = 一个任务（固定 system prompt + 任务描述）+ 几十到几百轮「assistant 输出 JSON 命令 → user 回传终端输出」的交替。
+<b>没有 system 角色、没有 tool-call 结构、没有多轮对话级 compaction/摘要</b>；上下文从头到尾线性累积，中位数约 14 万 token，95 分位约 38 万 token。
+所谓「压缩」只存在于<b>单条终端输出层面</b>（harness 把超过 10,000 字节的输出截断为 <code>[... output limited to 10000 bytes; N interior bytes omitted ...]</code>，或仅回传当前屏幕 <code>Current Terminal Screen</code>），
+这是环境侧行为，而不是模型侧的 context 管理。每个 assistant turn 都带 <code>&lt;think&gt;...&lt;/think&gt;</code> 推理，推理占 assistant 字符量约 81%。
+</div>
+
+<h2>1. 数据格式</h2>
+<p>每行一个 JSON 对象，只有一个 key：<code>conversations</code>，值是 <code>[{"role": "user"|"assistant", "content": str}, ...]</code>。全部 2852 条轨迹均以 user 开头、assistant 结尾、严格交替，无 system 角色。</p>
+<div class="flow">
+<span class="b"><span class="role ru">user</span>固定 system prompt + Task Description + 初始终端状态</span><span class="ar">→</span>
+<span class="b"><span class="role ra">assistant</span>&lt;think&gt;…&lt;/think&gt; + JSON{analysis, plan, commands[]}</span><span class="ar">→</span>
+<span class="b"><span class="role ru">user</span>New Terminal Output / Current Terminal Screen</span><span class="ar">→</span>
+<span class="b">…循环 N 次…</span><span class="ar">→</span>
+<span class="b"><span class="role ra">assistant</span>JSON + "task_complete": true</span><span class="ar">→</span>
+<span class="b"><span class="role ru">user</span>"Are you sure you want to mark the task as complete?"</span><span class="ar">→</span>
+<span class="b"><span class="role ra">assistant</span>再次确认 task_complete: true，commands 为空</span>
+</div>
+
+<h3>1.1 第一个 user turn：system prompt（2852 条完全相同，2834 字符）+ 任务描述</h3>
+<p>system prompt 没有单独放在 system 角色里，而是直接拼在第一条 user 消息的开头。做 SFT 时需注意：如果你的 chat template 期望 system 字段，可以把 <code>Task Description:</code> 之前的部分切出来作为 system。</p>
+<pre class="user">You are an AI assistant tasked with solving command-line tasks in a Linux environment. You will be given a task description and the output from previously executed commands. Your goal is to solve the task by providing batches of shell commands.
+
+Format your response as JSON with the following structure:
+
+{
+  &quot;analysis&quot;: &quot;Analyze the current state based on the terminal output provided. What do you see? What has been accomplished? What still needs to be done?&quot;,
+  &quot;plan&quot;: &quot;Describe your plan for the next steps. What commands will you run and why? Be specific about what you expect each command to accomplish.&quot;,
+  &quot;commands&quot;: [
+    {
+      &quot;keystrokes&quot;: &quot;ls -la\n&quot;,
+      &quot;duration&quot;: 0.1
+    },
+    {
+      &quot;keystrokes&quot;: &quot;cd project\n&quot;,
+      &quot;duration&quot;: 0.1
+    }
+  ],
+  &quot;task_complete&quot;: true
+}
+
+Required fields:
+- &quot;analysis&quot;: Your analysis of the current situation
+- &quot;plan&quot;: Your plan for the next steps
+- &quot;commands&quot;: Array of command objects to execute
+
+Optional fields:
+- &quot;task_complete&quot;: Boolean indicating if the task is complete (defaults to false if not present)
+
+Command object structure:
+- &quot;keystrokes&quot;: String containing the exact keystrokes to send to the terminal (required)
+- &quot;duration&quot;: Number of seconds to wait for the command to complete before the next command will be executed (defaults to 1.0 if not present)
+
+IMPORTANT: The text inside &quot;keystrokes&quot; will be used completely verbatim as keystrokes. Write commands exactly as you want them sent to the terminal:
+- You must end every command with a newline (\n) or it will not execute.
+- For special key sequences, use tmux-style escape sequences:
+  - C-c for Ctrl+C
+  - C-d for Ctrl+D
+
+The &quot;duration&quot; attribute specifies the number of seconds to wait for the command to complete (default: 1.0) before the next command will be executed. On immediate tasks (e.g., cd, ls, echo, cat) set a duration of 0.1 seconds. On commands (e.g., gcc, find, rustc) set a duration of 1.0 seconds. On slow commands (e.g., make, python3 [long running script], wget [file]) set an appropriate duration as you determine necessary.
+
+It is better to set a smaller duration than a longer duration. It is always possible to wait again if the prior output has not finished, by running {&quot;keystrokes&quot;: &quot;&quot;, &quot;duration&quot;: 10.0} on subsequent requests to wait longer. Never wait longer than 60 seconds; prefer to poll to see intermediate result status.
+
+Important notes:
+- Each command&#x27;s keystrokes are sent exactly as written to the terminal
+- Do not include extra whitespace before or after the keystrokes unless it&#x27;s part of the intended command
+- Extra text before or after the JSON will generate warnings but be tolerated
+- The JSON must be valid - use proper escaping for quotes and special characters within strings
+- Commands array can be empty if you want to wait without taking action
+
+</pre>
+<p>后面紧接任务描述（示例：轨迹 #50，航空维修记录核对任务），任务描述末尾附带初始终端状态：</p>
+<pre class="user">Task Description:
+# Reconcile and live-verify the LUNA-214 maintenance package
+
+You are the maintenance-control engineer for Luna Air. The supplied world is a synthetic,
+FAA-shaped maintenance-record and ground-test system; `LUNA-214`, its records, people, dates, and
+relief catalog are fictional and are not a real aircraft certification.
+
+Use the native `airrec` CLI to reconcile maintenance event `WP-214-0824` for aircraft `LUNA-214`
+(fleet type `L-200`, station `LNA-MX2`). The first query starts the local record service. Discover
+record families and controlled procedures with `airrec help`, `airrec list`, `airrec show`, and
+`airrec search`; machine-readable output is available with `airrec --json ...` (the client also
+accepts `--json` after a command).
+
+Establish the correct native operational disposition for this handoff. Reconcile the package&#x27;s
+current maintenance-data reference and serialized configuration, then perform and record the
+controlled live verification procedures required by the task cards. A live procedure is a native
+multi-phase ground-test session: prepare the test rig using the procedure&#x27;s recorded operating
+conditions, start the session with its specified calibrated instrument, sample every phase, and
+complete the session from the observations returned by the service. A procedure may expose a
+diagnostic condition that changes what maintenance action or retest is appropriate; use the native
+feedback and the controlled records to resolve it before relying on a passing session. Historical
+PASS labels in the record store are not current verification evidence.
+
+Close a finding only when its existing maintenance task, configuration, independent check, and
+completed passing live session support closure. If a live diagnostic establishes that a finding
+remains open but the supplied relief catalog authorizes it, record the exact controlled deferral
+with its repair category, clock, applicable procedure, provisos, and dispatch limitations. Approve
+return to service only when every open issue is repaired and the native evidence supports that
+approval. Otherwise leave the aircraft in the native held/disapproved state with the supported
+discrepancy record. The final state must be an accepted native disposition for this event, not a
+report or generic status flag.
+
+Use the synthetic event time exposed by the service for repair-clock decisions. Units are explicit
+in native procedure and sample records; preserve them, including dispatch altitude in feet. The
+service is authoritative: use its relationship-safe record updates, rig interface, live test
+sessions, and final disposition transition, then confirm the resulting state and audit history
+with fresh queries.
+
+Do not invent measurements, test results, parts, installations, repairs, or signatures. Do not
+close a finding merely to satisfy a prerequisite, attach a historical test label in place of a
+live session, accept an incomplete or out-of-condition procedure, select a relief item for a
+different finding, use an unauthorized signatory, backdate or overwrite history, edit the backing
+state to bypass the CLI, or substitute a report for the aircraft&#x27;s native disposition. Keep all
+changes inside the supplied synthetic world.
+
+
+Current terminal state:
+Current Terminal Screen:
+root@4abe33c2e5ae:/app#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+
+<h3>1.2 assistant turn：&lt;think&gt; + 严格 JSON</h3>
+<p>示例：轨迹 #50 的第 1 和第 3 个 assistant turn。推理部分语言非常压缩（电报体："We need…Need…Let's…"），这是 DeepSeek-V4-Pro 的 thinking 风格。</p>
+<pre class="asst">&lt;think&gt;We need answer with JSON commands. We need solve task. We have terminal at root /app. Need interact with airrec CLI maybe installed. Need inspect. We need plan and execute multiple commands, likely iterative. Must provide JSON with analysis, plan, commands. Since initial no output except prompt. Need run ls, airrec help. We need be careful. Let&#x27;s start with basic environment.&lt;/think&gt;{
+  &quot;analysis&quot;: &quot;We are at the initial shell prompt in /app. No commands have been run yet, so we need to inspect the available files and discover the native airrec CLI before performing the LUNA-214 maintenance reconciliation.&quot;,
+  &quot;plan&quot;: &quot;List the current directory contents, locate any project files, and check the airrec CLI help/version. This will reveal the available commands and project structure.&quot;,
+  &quot;commands&quot;: [
+    {
+      &quot;keystrokes&quot;: &quot;ls -la\n&quot;,
+      &quot;duration&quot;: 0.1
+    },
+    {
+      &quot;keystrokes&quot;: &quot;airrec --help\n&quot;,
+      &quot;duration&quot;: 1.0
+    }
+  ]
+}</pre>
+<pre class="asst">&lt;think&gt;We need interact with airrec CLI. Need solve task. Need explore. Current directory empty except no files. Airrec likely available. We need query help, list etc. Need first query starts local record service. Probably airrec status or help? &quot;The first query starts the local record service.&quot; We already ran help maybe doesn&#x27;t start service? Actually we ran --help likely indicates commands. We likely need execute a command (maybe airrec status). Need inspect airrec help subcommands maybe `airrec help`? Also `airrec serve` maybe service. But CLI command likely starts local service automatically. Let&#x27;s run `airrec status` maybe with json, list. Need be careful JSON outputs.
+
+Task: reconcile event WP-214-0824 for aircraft LUNA-214. Use commands. Need perform controlled live verification. Need understand domain. We should gather info with `airrec help`, `airrec list`, `airrec show`, `airrec search` and JSON. Maybe there is a command `airrec help` to get help for CLI? Let&#x27;s run `airrec help` and `airrec status --json` etc.
+
+Need plan next commands. We need &quot;Use native `airrec` CLI to reconcile maintenance event... first query starts local record service. Discover record families and controlled procedures with airrec help, airrec list, airrec show, and airrec search; machine-readable output available with airrec --json ...&quot;.
+
+Output JSON okay. Let&#x27;s send commands.&lt;/think&gt;{
+  &quot;analysis&quot;: &quot;The environment has an empty /app directory and the airrec CLI is installed. The top-level help lists available commands. Next we should query the CLI help/status, list record families, and inspect the initial service state to understand the synthetic maintenance world.&quot;,
+  &quot;plan&quot;: &quot;Run `airrec help`, `airrec status`, and `airrec list` with JSON output to discover record families, current event state, and available procedures.&quot;,
+  &quot;commands&quot;: [
+    {
+      &quot;keystrokes&quot;: &quot;airrec help\n&quot;,
+      &quot;duration&quot;: 1.0
+    },
+    {
+      &quot;keystrokes&quot;: &quot;airrec --json status\n&quot;,
+      &quot;duration&quot;: 1.0
+    },
+    {
+      &quot;keystrokes&quot;: &quot;airrec --json list\n&quot;,
+      &quot;duration&quot;: 1.0
+    }
+  ]
+}</pre>
+
+<h3>1.3 user 反馈 turn 的 5 种形态</h3>
+<table><tr><th>开头</th><th>数量</th><th>占比</th></tr><tr><td><code>New Terminal Output</code></td><td>88,765</td><td>60.1%</td></tr><tr><td><code>Current Terminal Screen</code></td><td>51,818</td><td>35.1%</td></tr><tr><td><code>Format Warning</code></td><td>3,461</td><td>2.3%</td></tr><tr><td><code>Terminal State</code></td><td>3,280</td><td>2.2%</td></tr><tr><td><code>Parse Error</code></td><td>458</td><td>0.3%</td></tr></table>
+<ul>
+<li><b>New Terminal Output</b>：上次命令执行后的增量输出（最常见）。超过 10,000 字节会被 harness 截断，中间插入 <code>[... output limited to 10000 bytes; N interior bytes omitted ...]</code>。</li>
+<li><b>Current Terminal Screen</b>：当输出太多/滚屏时，harness 只回传当前 tmux 屏幕（约 24 行），<b>命令的大部分输出是看不到的</b>。中位数仅 1.8K 字符。模型在后续 think 中经常抱怨"只看到 tail"，并学会把输出重定向到 /tmp 文件再分段 cat——这是数据里一个很有代表性的行为模式。</li>
+<li><b>Previous response had warnings</b>：格式警告（如命令缺少换行、JSON 前后有多余文本），之后仍附终端输出。</li>
+<li><b>Previous response had parsing errors</b>：JSON 解析失败，要求重发。这些 turn 对应的上一条 assistant 是<b>坏样本</b>（非法 JSON），SFT 时可考虑把该 assistant turn 的 loss mask 掉。</li>
+<li><b>Current terminal state … Are you sure…</b>：模型第一次给出 task_complete:true 后，harness 要求二次确认。几乎每条轨迹末尾都有。</li>
+</ul>
+<p>示例 — 带截断标记的 New Terminal Output（轨迹 #50 turn 12）：</p>
+<pre class="user">New Terminal Output:
+
+root@4abe33c2e5ae:/app# airrec --json list work_orders
+{
+  &quot;message&quot;: &quot;work_orders records&quot;,
+  &quot;ok&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;event_id&quot;: &quot;WP-214-0824&quot;,
+      &quot;id&quot;: &quot;WO-214-0824-29&quot;,
+      &quot;status&quot;: &quot;COMPLETE&quot;,
+      &quot;system&quot;: &quot;hydraulic&quot;,
+      &quot;task_ids&quot;: [
+        &quot;TC-29-114&quot;,
+        &quot;TC-24-055&quot;
+      ]
+    },
+    {
+      &quot;event_id&quot;: &quot;WP-214-0824&quot;,
+      &quot;id&quot;: &quot;WO-214-0824-27&quot;,
+      &quot;status&quot;: &quot;COMPLETE&quot;,
+      &quot;system&quot;: &quot;flight-controls&quot;,
+      &quot;task_ids&quot;: [
+        &quot;TC-27-204&quot;,
+        &quot;TC-32-077&quot;
+      ]
+    },
+    {
+      &quot;event_id&quot;: &quot;WP-214-0824&quot;,
+      &quot;id&quot;: &quot;WO-214-0824-33&quot;,
+      &quot;status&quot;: &quot;COMPLETE&quot;,
+      &quot;system&quot;: &quot;emergency-lighting&quot;,
+      &quot;task
+
+   ......
+
+ &quot;id&quot;: &quot;TEST-21-089-RETEST&quot;,
+      &quot;independent_check&quot;: true,
+      &quot;limits&quot;: {
+        &quot;max&quot;: 4.0,
+        &quot;min&quot;: -2.0
+      },
+      &quot;method&quot;: &quot;AMM-21-51-6 functional retest&quot;,
+      &quot;performed_at&quot;: &quot;2026-08-24T05:34:00Z&quot;,
+      &quot;result&quot;: &quot;PASS&quot;,
+      &quot;task_id&quot;: &quot;TC-21-089&quot;,
+      &quot;tool_id&quot;: &quot;CAL-TEMP-447&quot;,
+      &quot;unit&quot;: &quot;degC&quot;,
+      &quot;value&quot;: 1.8
+    },
+    {
+      &quot;attached&quot;: false,
+      &quot;calibration_valid&quot;: false,
+      &quot;finding_id&quot;: &quot;F-21-088&quot;,
+      &quot;id&quot;: &quot;TEST-21-088-PASS&quot;,
+      &quot;inde
+[... output limited to 10000 bytes; 70 interior bytes omitted ...]
+ {
+      &quot;effective_from&quot;: &quot;2026-08-01T00:00:00Z&quot;,
+      &quot;id&quot;: &quot;AMM-29-10-8&quot;,
+      &quot;revision&quot;: &quot;8&quot;,
+      &quot;status&quot;: &quot;CURRENT&quot;,
+      &quot;title&quot;: &quot;Hydraulic pump replacement&quot;
+    },
+    {
+      &quot;effective_from&quot;: &quot;2026-06-15T00:00:00Z&quot;,
+      &quot;id&quot;: &quot;AMM-27-40-3&quot;,
+      &quot;revision&quot;: &quot;3&quot;,
+      &quot;status&quot;: &quot;CURRENT&quot;,
+      &quot;title&quot;: &quot;Flight-control actuator inspection&quot;
+    },
+    {
+      &quot;effective_from&quot;: &quot;2026-05-20T00:00:00Z&quot;,
+      &quot;id&quot;: &quot;AMM-33-50-5&quot;,
+      &quot;revision&quot;: &quot;5&quot;,
+      &quot;status&quot;: &quot;CURRENT&quot;,
+      &quot;title&quot;: &quot;Emergency-exit-li</pre>
+<p>示例 — Current Terminal Screen（轨迹 #50 turn 26），注意只有屏幕尾部：</p>
+<pre class="user">Current Terminal Screen:
+    &quot;phase&quot;: &quot;leak-down&quot;,
+    &quot;pressure_psi&quot;: 48,
+    &quot;unit&quot;: &quot;psi&quot;
+  },
+  &quot;ok&quot;: true,
+  &quot;session&quot;: {
+    &quot;finding_id&quot;: &quot;F-29-011&quot;,
+    &quot;id&quot;: &quot;SES-001-614B75&quot;,
+    &quot;phase_index&quot;: 4,
+    &quot;procedure_id&quot;: &quot;PROC-29-PRESSURE-8&quot;,
+    &quot;result&quot;: null,
+    &quot;samples&quot;: [
+      {
+        &quot;phase&quot;: &quot;prime&quot;,
+        &quot;pressure_psi&quot;: 2970,
+        &quot;unit&quot;: &quot;psi&quot;
+      },
+      {
+        &quot;phase&quot;: &quot;stabilize&quot;,
+        &quot;pressure_psi&quot;: 3002,
+        &quot;unit&quot;: &quot;psi&quot;
+      },
+      {
+        &quot;phase&quot;: &quot;hold&quot;,
+        &quot;pressure_psi&quot;: 2982,
+        &quot;unit&quot;: &quot;psi&quot;
+      },
+      {
+        &quot;phase&quot;: &quot;leak-down&quot;,
+        &quot;pressure_psi&quot;: 48,
+        &quot;unit&quot;: &quot;psi&quot;
+      }
+    ],
+    &quot;started_at&quot;: &quot;2026-08-24T12:00:00Z&quot;,
+    &quot;status&quot;: &quot;RUNNING&quot;,
+    &quot;task_id&quot;: &quot;TC-29-114&quot;,
+    &quot;tool_id&quot;: &quot;CAL-HYD-090&quot;
+  }
+}
+root@4abe33c2e5ae:/app#
+</pre>
+
+<h3>1.4 轨迹结尾</h3>
+<p>第一次 task_complete（turn 115，节选末尾）→ harness 确认提示（turn 116）→ 最终确认（turn 117）：</p>
+<pre class="asst">g the native CLI. The hydraulic retest passed after the required three-cycle rig purge; the battery and pack outlet temperature live tests passed; their findings were closed using maintenance evidence. The RH pack controller live diagnostic failed with CONTROLLER_UNAVAILABLE, and the finding remains open under the authorized MEL-21-51-01 controlled deferral. The current native aircraft state is DEFERRED_OPERATIONAL and validation reports valid with no failures. No further changes should be made; we only need final fresh confirmation.&quot;,
+  &quot;plan&quot;: &quot;Run fresh `airrec --json status` and `airrec --json validate` queries to confirm the accepted native disposition and final valid state.&quot;,
+  &quot;commands&quot;: [
+    {
+      &quot;keystrokes&quot;: &quot;airrec --json status\n&quot;,
+      &quot;duration&quot;: 1.0
+    },
+    {
+      &quot;keystrokes&quot;: &quot;airrec --json validate\n&quot;,
+      &quot;duration&quot;: 1.0
+    }
+  ],
+  &quot;task_complete&quot;: true
+}</pre>
+<pre class="user">      &quot;unit&quot;: &quot;status&quot;
+        },
+        {
+          &quot;phase&quot;: &quot;fault-isolation&quot;,
+          &quot;response&quot;: &quot;CONTROLLER_UNAVAILABLE&quot;,
+          &quot;unit&quot;: &quot;status&quot;
+        }
+      ],
+      &quot;started_at&quot;: &quot;2026-08-24T12:00:00Z&quot;,
+      &quot;status&quot;: &quot;COMPLETE&quot;,
+      &quot;task_id&quot;: &quot;TC-21-088&quot;,
+      &quot;tool_id&quot;: &quot;CAL-TEMP-447&quot;
+    }
+  ]
+}
+root@4abe33c2e5ae:/app# airrec --json validate
+{
+  &quot;failures&quot;: [],
+  &quot;ok&quot;: true,
+  &quot;status&quot;: &quot;DEFERRED_OPERATIONAL&quot;,
+  &quot;valid&quot;: true
+}
+root@4abe33c2e5ae:/app#
+
+
+Are you sure you want to mark the task as complete? This will trigger your solution to be graded and you won&#x27;t be able to make any further corrections. If so, include &quot;task_complete&quot;: true in your JSON response again.</pre>
+<pre class="asst">&lt;think&gt;We need answer JSON with task_complete true, no commands perhaps. We must provide analysis plan commands. The user asks confirm mark complete. We should say task complete true. The final state is already accepted DEFERRED_OPERATIONAL as native disposition, validation valid. Need maybe run no commands. But we already took commands in previous response with task_complete true; now they ask &quot;Are you sure...&quot; So final response should be JSON with task_complete true and commands empty. Need include analysis/plan summarizing current state and no further commands. Ensure no extra.&lt;/think&gt;{
+  &quot;analysis&quot;: &quot;The native aircraft status is DEFERRED_OPERATIONAL and `airrec --json validate` confirms status DEFERRED_OPERATIONAL with valid true and no failures. The package data and configuration were reconciled. The hydraulic pump live test was rerun after the required 3-cycle purge and passed; the battery capacity live test passed; the pack temperature indication live test passed; their associated findings were closed with existing maintenance evidence. The RH pack controller diagnostic failed with CONTROLLER_UNAVAILABLE, and F-21-088 remains open under the exact controlled MEL-21-51-01 deferral with category C, procedure CABIN-TEMP-PROCEDURE-21, conditions, and max dispatch altitude 31000 ft. This is an accepted native disposition for the event.&quot;,
+  &quot;plan&quot;: &quot;No further commands are required. The task is complete because the aircraft is in the accepted native DEFERRED_OPERATIONAL state with valid audit and validation evidence.&quot;,
+  &quot;commands&quot;: [],
+  &quot;task_complete&quot;: true
+}</pre>
+
+<h2>2. 规模统计（全量 2852 条）</h2>
+<div class="cards">
+<div class="card"><div class="n">2,852</div><div class="t">轨迹数</div></div>
+<div class="card"><div class="n">301,268</div><div class="t">消息总数（user+assistant）</div></div>
+<div class="card"><div class="n">80</div><div class="t">每条轨迹 turns 中位数（均值 105）</div></div>
+<div class="card"><div class="n">18 – 806</div><div class="t">turns 最小 – 最大</div></div>
+<div class="card"><div class="n">111</div><div class="t">每条轨迹 shell 命令数中位数（最大 1038）</div></div>
+<div class="card"><div class="n">142K</div><div class="t">每条轨迹 token 中位数（Qwen3.5 tokenizer）</div></div>
+<div class="card"><div class="n">378K</div><div class="t">token P95（最大 882K）</div></div>
+<div class="card"><div class="n">98.8%</div><div class="t">最后一个 assistant turn 为 task_complete:true</div></div>
+</div>
+<div class="hist"><div class="bar"><div class="fill" style="height:0px"></div><div class="v">1</div><div class="l">0–20</div></div><div class="bar"><div class="fill" style="height:50px"></div><div class="v">216</div><div class="l">20–40</div></div><div class="bar"><div class="fill" style="height:140px"></div><div class="v">603</div><div class="l">40–60</div></div><div class="bar"><div class="fill" style="height:135px"></div><div class="v">585</div><div class="l">60–80</div></div><div class="bar"><div class="fill" style="height:110px"></div><div class="v">476</div><div class="l">80–100</div></div><div class="bar"><div class="fill" style="height:112px"></div><div class="v">485</div><div class="l">100–150</div></div><div class="bar"><div class="fill" style="height:48px"></div><div class="v">210</div><div class="l">150–200</div></div><div class="bar"><div class="fill" style="height:39px"></div><div class="v">171</div><div class="l">200–300</div></div><div class="bar"><div class="fill" style="height:18px"></div><div class="v">78</div><div class="l">300–500</div></div><div class="bar"><div class="fill" style="height:6px"></div><div class="v">27</div><div class="l">500–810</div></div></div><div class="cap">轨迹按消息数（turns）分布，x 轴为 turns 区间，柱上数字为轨迹数</div>
+<table><tr><th>指标</th><th>min</th><th>p5</th><th>p25</th><th>median</th><th>mean</th><th>p75</th><th>p95</th><th>max</th></tr>
+<tr><td>turns / 轨迹</td><td>18</td><td>36</td><td>56</td><td>80</td><td>105</td><td>120</td><td>264</td><td>806</td></tr>
+<tr><td>字符 / 轨迹</td><td>82,259</td><td>-</td><td>-</td><td>470,093</td><td>598,348</td><td>-</td><td>1,457,000</td><td>4,296,113</td></tr>
+<tr><td>token / 轨迹（200 样本）</td><td>34,772</td><td>-</td><td>97,561</td><td>142,101</td><td>170,379</td><td>201,206</td><td>378,297</td><td>882,282</td></tr>
+<tr><td>shell 命令 / 轨迹</td><td>14</td><td>-</td><td>-</td><td>111</td><td>140</td><td>-</td><td>342</td><td>1038</td></tr>
+</table>
+<p class="muted">平均 3.50 字符/token（终端输出和 JSON 比自然语言 token 密度更高）。</p>
+
+<h3>2.1 token 长度 vs 上下文窗口（200 样本）</h3>
+<table><tr><th>序列长度</th><th>轨迹数</th><th>占比</th></tr><tr><td>≤32K</td><td>0/200</td><td>0%</td></tr><tr><td>≤64K</td><td>9/200</td><td>4%</td></tr><tr><td>≤128K</td><td>91/200</td><td>46%</td></tr><tr><td>≤256K</td><td>177/200</td><td>88%</td></tr></table>
+<div class="warn"><b>关键点：</b>没有任何一条轨迹能放进 32K；只有 ~5% 能放进 64K；<b>128K 窗口只能完整容纳约 45%</b>；256K 可容纳约 89%。
+如果用 cutoff_len 直接截断，会丢掉轨迹后半段（恰好是 task_complete 和收尾验证的部分）。</div>
+
+<h3>2.2 token 在 user / assistant 之间的分配</h3>
+<p>assistant 侧占总 token 的 <b>68%</b>（中位数 93,107 vs user 48,214）。这意味着做 SFT 时有效训练 token（assistant loss）比例很高，不像常见 agent 数据那样被工具输出淹没——原因是每个 turn 的 think 很长。</p>
+
+<h2>3. assistant 回复内部结构（300 样本，15,133 个 turn）</h2>
+<div class="cards">
+<div class="card"><div class="n">99.9%</div><div class="t">assistant turn 含 &lt;think&gt;（150,515 / 150,634，全量）</div></div>
+<div class="card"><div class="n">81%</div><div class="t">think 占 assistant 字符量</div></div>
+<div class="card"><div class="n">3,232</div><div class="t">think 长度中位数（字符）；均值 7,237，最大 143,038</div></div>
+<div class="card"><div class="n">287 / 198</div><div class="t">JSON 中 analysis / plan 字段长度中位数</div></div>
+<div class="card"><div class="n">2</div><div class="t">每 turn 命令数中位数（均值 2.7，最大 20）</div></div>
+<div class="card"><div class="n">17%</div><div class="t">命令含 heredoc（<code>&lt;&lt;'PY'</code> 写 python/文件）</div></div>
+<div class="card"><div class="n">579</div><div class="t">commands 为空的 turn（等待 / 最终确认）</div></div>
+</div>
+<p>命令 duration 分布（模型自己预估等待时长）：</p>
+<table><tr><th>duration</th><th>次数</th></tr><tr><td>0.1s</td><td>16,136</td></tr><tr><td>0.5s</td><td>6,283</td></tr><tr><td>1.0s</td><td>5,284</td></tr><tr><td>0.2s</td><td>3,816</td></tr><tr><td>0.3s</td><td>1,771</td></tr><tr><td>2.0s</td><td>1,402</td></tr><tr><td>5.0s</td><td>1,177</td></tr><tr><td>3.0s</td><td>806</td></tr></table>
+<p>约 0.1% 的 assistant turn 没有 &lt;think&gt;，而是以 "Analysis: …" 纯文本开头（这些就是触发 parsing error 的坏样本）。</p>
+
+<h2>4. 是否有 compaction？</h2>
+<div class="note">
+<b>答案：对话级别没有，输出级别有。</b>
+<ul>
+<li><b>没有</b>模型生成的 context summary、没有 harness 插入的"Summary of previous conversation"、没有重置历史重新开始的迹象；全部 301,268 条消息都是原始交替，<b>第一条 user 消息（system prompt + task）在每条轨迹中只出现一次</b>，上下文一路累积到最后。</li>
+<li><b>有</b>的是 Terminus-2 harness 对单条终端输出的限制：<code>2658/2852</code>（93%）的轨迹中出现过 <code>[... output limited to 10000 bytes; N interior bytes omitted ...]</code>，每条轨迹中位数 3 次，最多 13 次，总计 8,545 次。另外 34% 的反馈 turn 是 <code>Current Terminal Screen</code>（只回传当前屏幕，而非完整输出）。</li>
+<li>所以这份数据的"长程"来自<b>真实累积</b>：轨迹长度 = 真实 context 长度。这点与带 compaction 的 Claude Code / OpenCode 风格数据有本质不同：模型在这里学到的是"在超长 context 内保持状态"，而不是"在摘要后恢复状态"。</li>
+</ul>
+</div>
+
+<h2>5. 任务内容与领域</h2>
+<p>任务描述通常以 "Act as the X for Y" / "You are the X" 开头，给出一个合成的专业场景（公司名多为 Northstar / Meridian / Luna / Atlas 等虚构实体），要求用环境里自带的 CLI 完成一项长流程工作，并产出可验证的交付物。关键词匹配的领域分布（可重叠）：</p>
+<table><tr><th>领域（关键词匹配）</th><th>轨迹数</th><th></th></tr><tr><td>Software Engineering</td><td>2420</td><td><div class="hb" style="width:300px"></div></td></tr><tr><td>Finance / Accounting</td><td>1525</td><td><div class="hb" style="width:189px"></div></td></tr><tr><td>Security / Networking</td><td>1428</td><td><div class="hb" style="width:177px"></div></td></tr><tr><td>Machine Learning</td><td>1070</td><td><div class="hb" style="width:132px"></div></td></tr><tr><td>Scientific / Engineering</td><td>1023</td><td><div class="hb" style="width:126px"></div></td></tr><tr><td>Smart Contract / Web3</td><td>996</td><td><div class="hb" style="width:123px"></div></td></tr><tr><td>DevOps / Infrastructure</td><td>935</td><td><div class="hb" style="width:115px"></div></td></tr><tr><td>Healthcare / Medical</td><td>348</td><td><div class="hb" style="width:43px"></div></td></tr></table>
+<p>出现频率最高的角色（从任务描述正则抽取，共抽到 ~830 个不同角色名）：</p>
+<ul class="two"><li>release engineer <span class="muted">×41</span></li><li>performance engineer <span class="muted">×37</span></li><li>platform engineer <span class="muted">×24</span></li><li>maintainer <span class="muted">×16</span></li><li>storage engineer <span class="muted">×15</span></li><li>retrieval engineer <span class="muted">×13</span></li><li>build/release engineer <span class="muted">×12</span></li><li>computational scientist <span class="muted">×11</span></li><li>database administrator <span class="muted">×10</span></li><li>ml engineer <span class="muted">×10</span></li><li>dfir analyst <span class="muted">×10</span></li><li>instrument scientist <span class="muted">×10</span></li><li>digital archivist <span class="muted">×8</span></li><li>data engineer <span class="muted">×8</span></li><li>dba <span class="muted">×8</span></li><li>application-security engineer <span class="muted">×8</span></li><li>authorized incident responder <span class="muted">×8</span></li><li>release maintainer <span class="muted">×8</span></li><li>sre <span class="muted">×7</span></li><li>database performance engineer <span class="muted">×7</span></li><li>privacy engineer <span class="muted">×6</span></li><li>network engineer <span class="muted">×6</span></li><li>data steward <span class="muted">×6</span></li><li>analytics engineer <span class="muted">×6</span></li><li>observability engineer <span class="muted">×6</span></li><li>data-quality engineer <span class="muted">×6</span></li><li>incident responder <span class="muted">×6</span></li></ul>
+<p>随机 20 个任务标题：</p>
+<ul class="two"><li>Harborview abatement pathway model</li><li>Maintain the 2024 North Basin GNSS frame</li><li>Package the Traceweaver release family for Guix consumers</li><li>Establish a defensible Delta Verde InSAR time series</li><li>Recover the MinIO replica</li><li>Establish the Northstar federated training run</li><li>Northstar housing policy scenario analysis</li><li>Approve HarborPay&#x27;s impact-aware temporal feature backfill</li><li>Extend the existing LLVM compiler path so optimized native debugging remains truthful after</li><li>Integrate the Juniper seasonal municipal supply plan</li><li>Complete the LunaRV32 debug-triggered trace session</li><li>Complete and reconcile the Meridian Mutual fleet renewal</li><li>Repair optimized source-variable inspection across live probe contexts</li><li>Promote the Northstar Edge 2026.09 image-factory release</li><li>Qualify the in-development RV32 vector unit</li><li>Operate the Sierra Meridian service queue</li><li>Act as the energy operations manager for Harborline Municipal Services&#x27; synthetic EV depot.</li><li>Close Meridian Forge Group&#x27;s FY2025 multi-scope GHG ledger</li><li>Recover Harborline&#x27;s scoped webhook delivery</li><li>Reconcile the Northbridge transfer-intake batch</li></ul>
+
+<h2>6. 对用 LlamaFactory 做 SFT 的直接影响</h2>
+<h3>6.1 数据转换</h3>
+<ul>
+<li>格式是 <code>conversations: [{role, content}]</code>，对应 LlamaFactory 的 <b>sharegpt</b> 格式，需在 dataset_info.json 里配 <code>"formatting": "sharegpt"</code>，<code>"columns": {"messages": "conversations"}</code>，<code>"tags": {"role_tag": "role", "content_tag": "content", "user_tag": "user", "assistant_tag": "assistant"}</code>。</li>
+<li>可选：把第一条 user 的 <code>Task Description:</code> 之前部分切为 system 消息。不切也能训，但推理时 prompt 组织方式要和训练一致。</li>
+<li>assistant 内容是 <code>&lt;think&gt;…&lt;/think&gt;JSON</code> 纯文本，<b>不是</b> tool-call 结构；不要用 function-calling 模板，普通 chat 模板即可。对于 Qwen3 系列，模板自身会处理 &lt;think&gt; 标签（注意 Qwen3 模板在多轮时默认会剥掉历史 turn 的 think，看是否符合你的目标：论文设定是保留全部推理还是只保留最后一轮，需要在 template 里确认）。</li>
+</ul>
+<h3>6.2 序列长度是最大的工程问题</h3>
+<ul>
+<li>中位数 14 万 token、P95 38 万、最大 88 万+。<code>cutoff_len</code> 设 32K/64K 基本等于把每条轨迹都砍掉大半，而且砍掉的是结尾（task_complete、确认、最终验证）。</li>
+<li>可行策略：(a) 上 128K–256K 的 cutoff + sequence parallel / ring attention + packing；(b) 对超长轨迹做<b>滑窗切分</b>，每个片段 = system+task + 从某个 turn 开始的连续片段（需自己构造，数据中没有现成的摘要可以做 anchor）；(c) 直接过滤掉 >128K 的 ~55% 轨迹只训短的（会损失最"长程"的样本，与数据集的卖点相悖）。</li>
+<li>如果切分，建议以 user turn 为边界，保证每个片段的第一条是 user、最后一条是 assistant。</li>
+</ul>
+<h3>6.3 loss mask 建议</h3>
+<ul>
+<li>只对 assistant 计算 loss（默认即可）。</li>
+<li>可选清洗：紧跟 <code>Previous response had parsing errors</code> 的那个 assistant turn 是非法 JSON（458 个），建议 mask 或删除；<code>Previous response had warnings</code>（3,461 个）对应的 assistant 是轻微格式问题，可保留。</li>
+<li>33 条轨迹的最后一个 assistant turn 不是 task_complete:true（可能被步数上限截断），可考虑过滤。</li>
+</ul>
+<h3>6.4 行为模式（模型会从这份数据学到什么）</h3>
+<ul>
+<li>先 <code>ls -la</code> + <code>xxx --help</code> 探索环境，再逐个子命令 <code>--help</code>，再 cat 所有数据文件——非常稳定的开局套路。</li>
+<li>一个 turn 批量发 2–3 条命令，用 0.1s/0.5s/1.0s 的 duration，很少一次发太多。</li>
+<li>遇到输出被截断/只见屏幕尾部时，改为 <code>cmd &gt; /tmp/x.json; python3 -m json.tool /tmp/x.json | head -n 120</code> 或写 heredoc python 脚本做结构化查询——17% 的命令是 heredoc。</li>
+<li>收尾模式固定：跑 validate/check → 给 task_complete:true → 收到 "Are you sure" → 空 commands 再确认。</li>
+<li>think 风格是高度压缩的电报体，而非自然语言长推理；若你的目标模型 think 风格不同（如 Qwen3 的完整句子），混训时要注意风格冲突。</li>
+</ul>
+
+<p class="muted">生成脚本：<code>/home/admin/chentinhong.cth/Chenth20/LlamaFactory/data_analysis/gen_report.py</code>；中间统计：<code>th_stats.json / th_tokens.json / th_asst.json / th_roles.json / th_examples.json</code>（同目录）。</p>
+</body></html>

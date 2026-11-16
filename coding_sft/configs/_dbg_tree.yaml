@@ -1,8 +1,8 @@
 ### A-vs-B operational parity: the dbg (32 shortest trajectories) tree cache, 8 steps, 1 GPU, ga=8.
 ### Step 1 runs with lr=0 (warmup), so its loss is a pure forward comparison against dbg_align_perdh
 ### (same 8 trajectories, same 217,406 supervised tokens, same weights).
-###   sbatch --reservation=rsi coding_sft/launch/slurm/run_dbg_tree.slurm
-###   EXTRA_OV="max_steps=1" sbatch ...   # forward-only parity check
+### Use coding_sft/patches/train_tree.py with the matching historical debug caches.
+### Set max_steps=1 to compare the forward loss of the first step.
 model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B-text
 trust_remote_code: true
 flash_attn: fa2

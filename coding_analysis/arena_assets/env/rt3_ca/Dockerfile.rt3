@@ -1,0 +1,11 @@
+# Add CA certificates to a TerminalHorizon image whose base lacks them: ARCA's bootstrap
+# (egress CA + arca_envd install) does `curl https://...` and fails with curl (60)
+# "SSL certificate problem", so envd never listens and every task TIMEOUT/HARNESS_FAILED.
+# Nothing else changes (ENTRYPOINT/CMD/WORKDIR/ENV/USER are inherited from BASE).
+ARG BASE
+FROM ${BASE}
+USER root
+RUN (apt-get update && apt-get install -y --no-install-recommends ca-certificates && update-ca-certificates && rm -rf /var/lib/apt/lists/*) \
+ || (apk add --no-cache ca-certificates && update-ca-certificates) \
+ || (yum install -y ca-certificates && update-ca-trust) \
+ || (dnf install -y ca-certificates && update-ca-trust)

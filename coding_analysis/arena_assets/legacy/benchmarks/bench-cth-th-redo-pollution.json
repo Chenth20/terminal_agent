@@ -1,0 +1,373 @@
+{
+ "reward_ref": {
+  "key": "tb2-reward",
+  "version": "4.0.0"
+ },
+ "env_refs": [
+  {
+   "env_ref": {
+    "key": "cth-th-adaptive-measurement-design-from-live-instrument-feedback",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-adaptive-spectral-acquisition-and-peak-model-revision",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-conform-heterogeneous-program-media-into-an-interoperable-as-11-mxf-deli",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-establish-identity-aware-east-west-policy-in-a-live-service-mesh",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-estimate-and-stress-test-a-transport-mode-choice-model",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-evpn-vxlan-control-to-data-plane-interoperability-qualification",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-extend-and-validate-a-seasonal-water-rights-allocation-model",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-extend-serializable-snapshot-isolation-across-parallel-query-workers",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-fastapi-resource-lifetime-across-streaming-responses",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-finish-a-long-read-genome-assembly-from-graph-and-read-evidence",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-govern-geo-distributed-cockroachdb-placement-under-live-load",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-ground-station-network-architecture-trade-study",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-harden-a-mature-python-extension-release-across-its-supported-platforms",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-an-iana-backed-civil-time-provider-in-a-language-runtime",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-risc-v-gnu-ld-direct-call-relaxation",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-a-canopen-motion-drive-layer-into-a-ros-2-mobile-base-graph",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-and-qualify-a-cross-builder-golden-image-pipeline",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-and-qualify-a-crossplane-composite-service-platform",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-and-qualify-an-openpbs-queue-and-reservation-policy",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-live-safe-ingress-to-gateway-api-migration-and-traffic-qualification",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-localize-and-characterize-an-rf-interference-source",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-make-a-monorepo-s-incremental-build-graph-sound-and-selective",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-delay-resilient-haptic-teleoperation-controller",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-kubernetes-workload-with-coupled-autoscaling-signals",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-linux-ptp-boundary-clock-against-independent-peers",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-load-aware-kubernetes-scheduler-profile-for-mixed-workloads",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-multi-sensor-robot-calibration-for-localization",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-prometheus-thanos-retention-and-downsampling-migration",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-an-application-consistent-kubernetes-disaster-recovery-restore",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-mqtt-5-persistent-session-and-qos-interoperability",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-nfsv4-locking-and-recovery-across-independent-implementations",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-nfsv4-stateful-recovery-across-failover-and-partitions",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconstruct-and-restore-a-compromised-container-supply-chain",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconstructing-a-failed-service-mesh-request-from-encrypted-metadata",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-recover-a-ceph-placement-group-safely-under-live-rados-i-o",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-release-a-kubernetes-compatible-helm-chart-library-across-its-consumer-g",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-repair-an-xfs-free-space-accounting-race-under-concurrent-writes",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-repairing-distributed-cache-freshness-under-concurrent-writes",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reproduce-and-remediate-a-linux-packet-path-performance-regression",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-resilient-event-time-join-migration-across-savepoint-rescaling",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reverse-engineer-an-undocumented-usb-hid-peripheral-into-a-compatible-li",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-roll-out-and-verify-multi-as-bgp-routing-policy",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-stateful-live-relocation-of-an-edge-service",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-survey-grade-airborne-lidar-strip-adjustment-with-trajectory-and-control",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-trace-and-restore-a-containerized-nat-packet-path",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-transition-a-service-mesh-dependency-to-explicit-authenticated-traffic-p",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-tune-fair-elastic-tenant-capacity-on-a-shared-kubernetes-batch-platform",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-validate-a-federated-learning-round-under-client-heterogeneity",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-validate-a-quantitative-multi-coil-mri-reconstruction-pipeline",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-validate-and-calibrate-a-protein-ligand-docking-rescoring-workflow",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  }
+ ],
+ "aggregation": {
+  "method": "mean",
+  "failed_task_policy": "failed_as_zero"
+ },
+ "tags": [
+  "source:terminal-horizon",
+  "domain:terminal",
+  "chen",
+  "th-redo-pollution"
+ ],
+ "metadata": {
+  "purpose": "Rerun of the 50 envs whose DONE trajectories in cth-thfull14-dsv41-2610270211 carry environment pollution (agent-shell pip/git/hf network failures, 8Gi OOM kills, ARCA eperm on task-private networks); audit = coding_arena/code/sft/audit_env_pollution.py. Harness 1.7.96 fixes mirrors+16Gi; eperm-net envs are expected to stay broken (ARCA policy) and are rerun for completeness.",
+  "count": "50",
+  "source_job": "cth-thfull14-dsv41-2610270211"
+ }
+}

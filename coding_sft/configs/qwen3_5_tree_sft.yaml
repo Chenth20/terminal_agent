@@ -6,8 +6,7 @@
 # Launched through coding_sft/patches/train_tree.py (torchrun), not llamafactory-cli: the tree patch and
 # the tree collator must be installed before LF builds its trainer.
 #
-#   coding_sft/launch/slurm/run_tree.slurm  (NAME=flash|flash_solved|th3k)
-#   coding_sft/launch/ais/submit_tree_ais.sh (NAME=... NODES=4)
+# Prepare the tree cache and schedule as described in coding_analysis/methods/tree_sft.md.
 
 ### model
 model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B-text

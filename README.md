@@ -1,6 +1,14 @@
-# Terminal Agent SFT
+# Terminal Agent
 
 用 TerminalHorizon 的终端交互轨迹微调 Qwen3.5，训练能根据命令输出继续操作、检查交付结果的小模型。本仓库包含 SFT 数据准备、训练、数值检查与 H100 显存实验，也包含训练依赖的定制 LlamaFactory 源码。
+
+从 [项目交接](coding_analysis/HANDOFF.md) 开始。训练、评测和实验记录在服务器与仓库中使用相同的路径。
+
+| 目录 | 内容 |
+| --- | --- |
+| [coding_sft](coding_sft/) | 数据准备、训练配方、H100 与双节点启动入口。[训练指南](coding_analysis/training.md) |
+| [coding_eval](coding_eval/) | 模型部署检查、评测统计和轨迹分析。[评测指南](coding_analysis/evaluation.md) |
+| [coding_analysis](coding_analysis/) | [实验账本](coding_analysis/experiments/README.md)、[方法文档](coding_analysis/methods/)和[论文索引](coding_analysis/paper/README.md) |
 
 | 入口 | 用途 |
 | --- | --- |
@@ -55,9 +63,3 @@ NODE_RANK=1 MASTER_ADDR="$MASTER_ADDR" bash coding_sft/launch/train_th3k_c312.sh
 两节点共 16 卡，微批 1、GA4，按长度分组，恒定学习率 1e-5、warmup 12 步。重复使用同一 `OUT_DIR` 会从已保存的进度续训。可用 `MODEL_DIR`、`DATA_DIR`、`FLAT_CACHE`、`OUT_DIR` 分别覆盖输入和输出位置。[基础配方](coding_sft/configs/qwen3_5_terminal_agent_sft_3k_256k.yaml)
 
 历史 TB2.1 旧 verifier、Terminus 1.0.0 下，4B base 为 50/267，c312 为 62/178。同一 c312 在 mirror verifier 1.0.1 下为 73/178。H100 十步验证衡量训练链路，未产生新的 TB2.1 成绩。
-
-## 原集群实验与来源
-
-`coding_sft/launch/slurm/` 和 `coding_sft/launch/ais/` 保留原集群的入口与资源设置，使用时需要对应的分区、镜像和共享目录。AIS 提交从环境读取 `AISTUDIO_TOKEN`。`archive/` 收录历史消融脚本与配方。
-
-训练框架基于 LlamaFactory，包含本项目使用的 loss、模板、packing 和 checkpoint 修改。安装时使用本仓库源码。保留上游及随附第三方源码的版权声明。[LlamaFactory](https://github.com/hiyouga/LLaMA-Factory) · [Apache License 2.0](LICENSE)

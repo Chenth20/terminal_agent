@@ -15,7 +15,7 @@
 """Run a training YAML through LlamaFactory's real data pipeline (tokenizer + template + processor)
 on CPU and check the supervision mask before spending GPU time.
 
-    python coding_sft/checks/inspect_sft_labels.py coding_sft/configs/archive/qwen3_5_terminal_agent_sft.yaml --n 3
+    python coding_sft/checks/inspect_sft_labels.py coding_sft/configs/qwen3_5_terminal_agent_sft_3k_256k.yaml --n 3
 
 Checks per example:
   * len(input_ids) == len(labels) and at least one supervised token

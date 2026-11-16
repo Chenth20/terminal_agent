@@ -8,7 +8,7 @@ For every L: random packed batch of segments (Qwen3.5-4B GDN shapes), forward + 
   * finiteness of output and all grads,
   * the FIRST segment's output/grads vs the same segment run alone (L small, known good).
 
-    sbatch --reservation=rsi --export=ALL,SCRIPT=coding_sft/checks/check_fla_len.py coding_sft/launch/slurm/run_check_state.slurm
+    python coding_sft/checks/check_fla_len.py
 """
 
 import torch

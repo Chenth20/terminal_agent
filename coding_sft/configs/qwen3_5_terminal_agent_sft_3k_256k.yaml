@@ -27,7 +27,7 @@
 # full-attention layers is ~quadratic). tokenized_path caches the encoding; MUST be pre-built
 # (coding_sft/prep/build_tokenized.py) before any multi-node job.
 #
-# Launch: coding_sft/launch/ais/submit_ablation_ais.sh (AIS) / coding_sft/launch/slurm/run_ablation.slurm (Slurm).
+# Launch: coding_sft/launch/train_th3k_c312.sh (two nodes).
 
 ### model
 model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B-text
@@ -74,7 +74,7 @@ report_to: none
 include_num_input_tokens_seen: true
 
 ### train (TerminalHorizon paper settings, 3 epochs)
-# EFFECTIVE BATCH = 64 trajectories on every cluster: 8 GPU x ga 8 (Slurm) == 32 GPU x ga 2 (AIS 4 nodes).
+# EFFECTIVE BATCH = 64 trajectories on every cluster: 8 GPUs x GA 8, 16 GPUs x GA 4, or 32 GPUs x GA 2.
 # Override gradient_accumulation_steps on the command line for other world sizes (64 / n_gpus).
 per_device_train_batch_size: 1
 gradient_accumulation_steps: 8

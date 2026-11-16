@@ -1,0 +1,21 @@
+# 19 envs from cth-thfull14 bad-env list that cannot be fixed from this cluster:
+# 18 = images lack CA certificates (rebuild externally); 1 = oracle too large for shared-sandbox reward delivery
+cth-th-carry-an-rpm-library-abi-transition-across-subpackages-and-consumers
+cth-th-close-a-digital-block-through-timing-power-and-routability-aware-physica
+cth-th-establish-a-defensible-multi-run-quantitative-proteomics-result
+cth-th-establish-causally-correct-time-in-an-hla-federation
+cth-th-harden-and-operate-multi-as-bgp-policy-with-rpki-validation
+cth-th-make-a-linux-usb-host-driver-survive-power-and-hotplug-lifecycles
+cth-th-make-incremental-monorepo-builds-fast-without-making-them-wrong
+cth-th-operate-a-query-continuous-time-series-retention-lifecycle
+cth-th-promote-a-cloud-foundry-revision-through-a-routed-service-graph
+cth-th-reconcile-kubernetes-api-priority-and-fairness-for-shared-control-plane
+cth-th-reconstructing-scientific-workflow-provenance-from-native-run-evidence
+cth-th-recover-a-corrupted-innodb-instance-across-pages-redo-and-logical-data
+cth-th-recovering-a-partially-written-audiovisual-container
+cth-th-reproduce-congestion-control-claims-in-an-executable-packet-testbed
+cth-th-safely-rebalance-kafka-partition-replicas-under-live-producer-and-consum
+cth-th-scan-dft-integration-and-atpg-coverage-closure
+cth-th-tune-a-timescaledb-telemetry-hypertable-for-late-arriving-data
+cth-th-validate-a-stability-aware-atmospheric-dispersion-model-against-tracer-o
+cth-th-zero-downtime-full-text-search-generation-migration

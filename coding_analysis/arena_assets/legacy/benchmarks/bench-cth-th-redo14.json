@@ -1,0 +1,1010 @@
+{
+ "reward_ref": {
+  "key": "tb2-reward",
+  "version": "4.0.0"
+ },
+ "env_refs": [
+  {
+   "env_ref": {
+    "key": "cth-th-acknowledgement-aware-auv-feature-tracking",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-activate-a-provenance-preserving-spatiotemporal-asset-catalog",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-adaptive-neutron-diffraction-campaign-control",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-adaptive-privacy-budgeting-for-a-multi-analyst-sql-query-gateway",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-adaptive-robotic-synthesis-for-a-qualified-materials-phase-map",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-add-a-first-class-resumable-backfill-step-to-prisma-migrate",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-adjudicate-and-settle-multi-party-subrogation-recoveries",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-asic-physical-implementation-closure-across-timing-power-routing-and-sig",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-bounded-food-lot-recall-containment-through-lot-genealogy",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-bounded-kafka-replay-for-downstream-state-recovery",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-brownfield-infrastructure-ownership-reconciliation",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-a-history-governed-durable-workflow-engine",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-a-point-in-time-correct-event-time-join-under-partition-skew",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-a-provenance-preserving-identity-aware-email-archive-for-scholarly",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-a-queryable-historical-dictionary-citation-corpus",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-a-recovering-sequenced-market-data-feed-handler",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-a-rename-aware-interruption-safe-filesystem-synchronizer",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-a-stateful-checkout-web-product-from-user-requirements",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-an-annotator-aware-active-learning-loop-for-subjective-nlp",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-an-offline-first-interactive-geospatial-layer-explorer",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-build-and-validate-a-hybrid-sparse-dense-retrieval-pipeline",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-calibrate-an-fmi-ssp-industrial-twin-for-maintenance-decisions",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-calibrate-fair-share-scheduling-for-a-heterogeneous-hpc-cluster",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-close-ready-cash-multi-account-bank-feed-reconciliation-in-a-plain-text",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-close-the-books-erp-subledger-to-general-ledger-reconciliation",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-close-the-loop-on-a-serialized-warranty-repair",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-commission-a-calibrated-ros-2-robot-workcell",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-commission-a-closed-loop-hvac-supervisory-control-sequence",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-commission-a-generation-aware-systemd-release-role-ev21",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-commission-a-roaming-capable-enterprise-wlan-from-the-linux-wireless-pla",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-conflate-heterogeneous-road-data-into-a-behaviorally-validated-routable",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-consent-bound-web-data-flow-reconciliation",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-coordinate-a-live-kafka-event-contract-migration-across-mixed-consumers",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-coordinate-a-safe-kafka-event-contract-release",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-cross-border-indirect-tax-filing-close-and-submission-reconciliation",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-cross-engine-lakehouse-table-compatibility-engineering",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-curate-and-publish-a-queryable-stac-catalog-for-earth-observation-assets",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-cutover-safe-modernization-of-a-live-lakehouse-table",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-delayed-mode-quality-control-and-publication-of-a-recovered-ocean-buoy-s",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-engineer-and-qualify-mpi-checkpoint-restart-for-slurm-preemption",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-engineer-tenant-fair-admission-control-for-a-shared-http-api",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-evidence-linked-suspicious-activity-reporting-operations",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-evolve-postgresql-driver-pipeline-semantics-across-the-wire-api-boundary",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-evpn-vxlan-control-to-data-plane-interoperability-qualification",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-execute-a-health-gated-ansible-rolling-release-across-heterogeneous-linu",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-feedback-driven-flink-rescale-for-event-time-windows",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-holdover-safe-airport-deicing-and-surface-flow",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-a-durable-idempotent-inventory-reservation-service",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-a-durable-offline-first-crdt-document-sync-layer",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-a-multi-vendor-order-and-settlement-product",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-a-type-solver-rule-and-diagnostics-in-rustc",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-cancellation-safe-structured-concurrency-in-tokio",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-implement-retroactive-corrections-in-a-bitemporal-event-sourced-ledger",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-a-provenance-preserving-astronomical-alert-broker",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-and-qualify-an-openpbs-queue-and-reservation-policy",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-and-validate-a-privacy-preserving-measurement-task",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-heterogeneous-workloads-with-consul-health-aware-service-disco",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-integrate-slurm-accounting-and-fair-share-scheduling-for-mixed-workloads",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-interdomain-bgp-traffic-engineering-and-capacity-plan-under-failure",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-live-safe-ingress-to-gateway-api-migration-and-traffic-qualification",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-machine-checked-refinement-of-a-concurrent-replicated-service",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-maintain-an-online-fraud-risk-model-under-delayed-evolving-feedback",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-make-a-broker-to-database-event-workflow-idempotent-under-recovery",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-make-a-multi-sensor-robot-state-estimate-trustworthy",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-make-recurring-caldav-scheduling-converge-across-independent-peers",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-make-recurring-product-access-tell-the-truth",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-modernize-a-legacy-python-django-application-across-compatibility-bounda",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-oci-distribution-compatibility-relay",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-onboard-a-heterogeneous-vendor-fleet-into-open-rmf",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-online-vitess-resharding-under-live-transactional-traffic",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-a-cdn-cache-and-origin-protection-path-under-changing-traffic",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-a-permission-aware-evaluated-rag-service",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-a-safe-staged-ota-rollout-for-an-intermittently-connected-edge-f",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-a-scylladb-cluster-to-reconcile-skewed-replicas-under-live-load",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-an-adaptive-api-abuse-mitigation-policy",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-an-adaptive-ecological-restoration-monitoring-round",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-an-adaptive-multiparty-webrtc-sfu",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-cockroachdb-range-rebalancing-under-live-serializable-load",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-fair-distributed-api-admission-across-tenants",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-operate-tikv-hot-region-scheduling-under-concurrent-load",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-plan-and-operate-a-resource-and-data-aware-scientific-workflow-on-an-hpc",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-promote-a-signed-multi-architecture-oci-release-without-breaking-provena",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-closed-loop-ros-2-mobile-robot-autonomy-stack",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-knative-event-path-under-bursty-load",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-linux-ptp-boundary-clock-against-independent-peers",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-low-latency-adaptive-streaming-presentation",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-multi-sensor-robot-calibration-for-localization",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-a-provenance-preserving-rag-index-refresh",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-an-application-consistent-kubernetes-disaster-recovery-restore",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-and-fail-over-a-replicated-object-storage-site",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-bgp-graceful-restart-and-enhanced-route-refresh-across-heterogen",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-dual-stack-dhcp-ha-lease-convergence",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-nfsv4-stateful-recovery-across-failover-and-partitions",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-refresh-only-ldap-syncrepl-from-389-directory-server-to-openldap",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-sctp-multihoming-failover-between-independent-peers",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-sip-proxy-paths-for-stateful-transaction-and-dialog-interoperabi",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-qualify-wireguard-roaming-and-rekey-interoperability-across-implementati",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-a-federated-application-s-identity-lifecycle",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-and-run-an-insured-catastrophe-portfolio-risk-model",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-cold-chain-excursions-and-safely-disposition-affected-lots",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-e-logbook-landings-before-registering-a-quota-transfer",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-road-networks-into-a-routable-linear-referenced-base",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-the-inpatient-medication-use-ledger",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-the-wildfire-incident-operating-picture-for-the-next-operation",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconcile-versioned-object-retention-and-lineage-safely",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reconstruct-a-curated-photo-video-library-across-catalogs-and-sidecars",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-recover-a-minio-replica-after-peer-data-loss",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-recover-a-versioned-erasure-coded-object-store",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-recover-and-qualify-a-multisite-semiconductor-production-test-program",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-recover-and-qualify-a-transactional-outbox-delivery-lineage",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-recover-replicated-broker-partitions-without-losing-backlog-integrity",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-release-a-kubernetes-compatible-helm-chart-library-across-its-consumer-g",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-release-a-queryable-data-lineage-graph-for-change-impact-decisions",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-release-a-zero-downtime-search-index-generation-under-live-ingestion",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-repair-and-release-a-nix-derivation-across-its-consumer-closure",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-repair-cross-hop-http-2-streaming-backpressure-in-a-reverse-proxy",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-repairing-a-jit-runtime-s-optimized-frame-contract-across-moving-gc-and",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-replan-a-cooperative-robot-inspection-mission-through-lost-links-and-low",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reproduce-a-relative-binding-free-energy-campaign",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reproduce-and-eliminate-go-service-contention-under-representative-load",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-reproduce-and-remediate-a-linux-packet-path-performance-regression",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-resilient-event-time-join-migration-across-savepoint-rescaling",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-resolve-an-iso-20022-payment-exception-across-the-return-chain",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-restore-mvcc-vacuum-health-across-a-postgresql-replication-horizon",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-retire-a-legacy-event-driven-service-without-stranding-its-dependents",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-roll-a-versioned-event-contract-through-real-producers-and-consumers",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-roll-out-and-verify-multi-as-bgp-routing-policy",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-safely-replace-an-etcd-raft-member-during-live-writes",
+    "version": "1.4.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-safety-gated-provenance-preserving-replay-of-a-mobile-robot-mission",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-second-life-battery-gateway-qualification",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-stabilize-a-stateful-rss-atom-intake-service-across-feed-evolution",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-support-case-family-reconciliation-under-review-budget",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-three-way-note-conflict-reconciliation-in-a-mature-syncing-app",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-tombstone-aware-cassandra-replica-convergence-repair",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-transition-a-service-mesh-dependency-to-explicit-authenticated-traffic-p",
+    "version": "1.2.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-tune-a-shared-linux-host-for-latency-and-throughput",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-tune-a-solrcloud-faceted-search-collection-under-workload",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-validate-an-embedded-firmware-vulnerability-through-rehosting",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-workload-aware-resharding-of-a-skewed-mongodb-collection",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-zero-copy-arrow-interchange-for-a-mature-dataframe-library",
+    "version": "1.1.0"
+   },
+   "weight": 1
+  },
+  {
+   "env_ref": {
+    "key": "cth-th-zero-disruption-migration-of-versioned-web-sessions",
+    "version": "1.3.0"
+   },
+   "weight": 1
+  }
+ ],
+ "aggregation": {
+  "method": "mean",
+  "failed_task_policy": "failed_as_zero"
+ },
+ "tags": [
+  "source:terminal-horizon",
+  "domain:terminal",
+  "chen",
+  "th-redo14"
+ ],
+ "metadata": {
+  "purpose": "Re-run of the 141 envs whose trajectories in job cth-thfull14-dsv41-2610270211 (source of /storage/openpsi/users/chen/code_sft_data/dsv41_history) failed for system reasons, plus the 87 flat envs. Fixed versions: flat=1.3.0 (setup hook start sidecars), reward-hang+DNS=1.4.0. Excluded: 18 CA-broken images + 1 oversized oracle (work/manifests/th14_excluded_envs.txt).",
+  "count": "141",
+  "source_job": "cth-thfull14-dsv41-2610270211"
+ }
+}

@@ -7,7 +7,7 @@ This check runs the raw fla kernel (expected: wrong/IMA past 262144 -> only up t
 chunked _conv_varlen (expected: exact) against a per-segment Dao-AILab causal_conv1d_fn reference on
 EVERY segment, fwd + bwd, at the lengths that appear in the flash cache (max branch-token sum 274,858).
 
-    sbatch --reservation=rsi --export=ALL,SCRIPT=coding_sft/checks/check_conv_len.py coding_sft/launch/slurm/run_check_state.slurm
+    python coding_sft/checks/check_conv_len.py
 """
 
 import os
