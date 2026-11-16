@@ -1,0 +1,88 @@
+# TerminalHorizon 128-trajectory test for the tf5.12.1 agent-SFT image.
+#
+# Data (coding_sft/prep/prepare_terminal_horizon.py --max-rows 128 --val-ratio 0.0625):
+#   686 train windows from 120 trajectories + 41 eval windows from 8 held-out trajectories,
+#   windows <= 32K tokens (p50 29.8K), in /storage/openpsi/users/chen/data/terminal_horizon_128.
+#
+# Optimizer / schedule follow the TerminalHorizon paper settings in train.md:
+#   fused AdamW, betas (0.9, 0.95), peak lr 1e-5, cosine, warmup 0.05, weight_decay 0.1,
+#   grad clip 1.0, 3 epochs, micro-batch 1, packing OFF, bf16, ZeRO-3, FlashAttention-2, seed 42.
+# Deviation: max sequence length 32K instead of 262K (their 262K needs sequence parallelism
+# that upstream LlamaFactory does not provide for Qwen3.5; our prep chunks trajectories instead,
+# so no sample is truncated).
+#
+# Throughput (coding_sft/launch/slurm/bench_throughput.slurm, 8 x L20X 143GB, 1 x 32K tokens/GPU/micro-step):
+#   ZeRO-3 + liger + grad-ckpt         ~33 s/step  13.0K tok/s   23 GB peak   (paper setting; chosen)
+#   ZeRO-2 + liger + grad-ckpt         ~33 s/step  13.0K tok/s   29 GB peak   (no gain: compute-bound, not comm-bound)
+#   ZeRO-2 + grad-ckpt, no liger       ~34 s/step            126 GB peak      (liger's fused CE is what keeps 248K-vocab logits off the GPU)
+#   any variant WITHOUT grad-ckpt       OOM (activations of 32 layers x 32K tokens exceed 140 GB)
+#   per_device_train_batch_size=2       slower per token (padding to the longest window) + 39 GB
+#   GatedDeltaNet fast path (fla + causal-conv1d, added to the image)   required; without it the
+#                                       linear-attention layers run a torch loop.
+# A step is 16 windows x ~30K tokens = ~440K supervised-context tokens; 686 windows / 16 = 43
+# steps/epoch, 3 epochs = 129 steps ~ 75 min.
+# NOTE: bench numbers vary ~2x between nodes when another job shares the node (observed 33 s vs
+# 70 s per step for the identical config); compare variants only within one job.
+#
+#   WANDB_API_KEY=... CONFIG=coding_sft/configs/archive/qwen3_5_terminal_agent_sft_128.yaml \
+#   SIF=.../llamafactory-agent-sft-tf5.12.1-latest.sif RUN_NAME=th128_tf5.12.1 \
+#   sbatch coding_sft/launch/slurm/run_terminal_agent_sft.slurm
+
+### model
+model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B
+trust_remote_code: true
+flash_attn: fa2
+enable_liger_kernel: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset_dir: /storage/openpsi/users/chen/data/terminal_horizon_128
+dataset: th128
+eval_dataset: th128_val
+template: qwen3_5
+enable_thinking: true
+cutoff_len: 32768
+train_on_prompt: false
+mask_history: false
+packing: false
+overwrite_cache: false
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+
+### eval
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 10
+
+### output
+output_dir: /storage/openpsi/users/chen/checkpoints/th128_qwen3.5_4b
+logging_steps: 1
+save_strategy: epoch
+save_total_limit: 1
+save_only_model: true
+plot_loss: true
+overwrite_output_dir: true
+report_to: none
+include_num_input_tokens_seen: true
+
+### train (TerminalHorizon paper settings)
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 2
+learning_rate: 1.0e-5
+num_train_epochs: 3.0
+optim: adamw_torch_fused
+adam_beta1: 0.9
+adam_beta2: 0.95
+weight_decay: 0.1
+max_grad_norm: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.05
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+seed: 42

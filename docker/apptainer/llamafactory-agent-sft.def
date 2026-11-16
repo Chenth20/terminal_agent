@@ -1,0 +1,107 @@
+Bootstrap: localimage
+From: /storage/openpsi/images/llamafactory-v0.sif
+
+# Agent-SFT image for this LlamaFactory checkout (0.9.6.dev0).
+#
+# Base image already ships: Python 3.11, torch 2.6.0+cu124, transformers 5.2.0,
+# datasets 4.0.0, accelerate 1.11.0, peft 0.18.1, trl 0.24.0, deepspeed 0.18.4,
+# flash-attn 2.7.4 — all inside the ranges declared in pyproject.toml.
+#
+# What this layer adds (everything the repo's requirements/ need for the
+# Qwen3.5 + full-SFT + liger path that the base image lacks):
+#   * flash-linear-attention + fla-core  -> fused GatedDeltaNet kernels used by
+#     transformers' Qwen3.5 model (otherwise falls back to slow torch loops)
+#   * liger-kernel                        -> requirements/liger-kernel.txt
+#   * nltk / jieba / rouge-chinese        -> requirements/metrics.txt
+#   * this repo installed as `llamafactory` (replacing the base image's
+#     0.9.5.dev0 copy in /app) so `llamafactory-cli` resolves to this code.
+#
+#   * optionally a newer transformers (build-arg TRANSFORMERS_VERSION; "" keeps
+#     the base image's 5.2.0). 5.12.1 was validated: deps resolve to a single
+#     wheel swap, Qwen3.5 + liger + fla + ZeRO-3 training run; the repo's upper
+#     bound in pyproject.toml / extras/misc.py was raised to match.
+#   * causal-conv1d (prebuilt wheel, sm_89 / L20X, torch 2.6 cu124) -> together with fla
+#     this enables transformers' Qwen3.5 GatedDeltaNet "fast path"; without it every
+#     linear-attention layer falls back to the torch loop implementation.
+#   * wandb for experiment tracking.
+#
+# Build (compute node, via scripts/agent_sft/build_sif.sbatch):
+#   apptainer build llamafactory-agent-sft.sif docker/apptainer/llamafactory-agent-sft.def
+#   apptainer build --build-arg TRANSFORMERS_VERSION=5.12.1 ...   # upgraded variant
+
+%arguments
+    TRANSFORMERS_VERSION=
+
+%files
+    # source paths are relative to the directory `apptainer build` runs in,
+    # which must be the repo root (see scripts/agent_sft/build_sif.sbatch)
+    pyproject.toml   /opt/llamafactory/pyproject.toml
+    README.md        /opt/llamafactory/README.md
+    LICENSE          /opt/llamafactory/LICENSE
+    MANIFEST.in      /opt/llamafactory/MANIFEST.in
+    src              /opt/llamafactory/src
+    requirements     /opt/llamafactory/requirements
+    /storage/openpsi/users/chen/wheels/causal_conv1d-1.5.3.post1-cp311-cp311-linux_x86_64.whl /opt/wheels/causal_conv1d-1.5.3.post1-cp311-cp311-linux_x86_64.whl
+
+%post
+    set -eux
+    export PIP_INDEX_URL=https://artifacts.antgroup-inc.cn/simple/
+    export PIP_TRUSTED_HOST=artifacts.antgroup-inc.cn
+    export PIP_NO_INPUT=1 PIP_ROOT_USER_ACTION=ignore PIP_DISABLE_PIP_VERSION_CHECK=1
+
+    # --no-deps: the resolver was verified (dry-run) to otherwise try to pull
+    # torch 2.14 / transformers 5.20 / cu13 libs; the pinned wheels are pure
+    # python and work with the base image's torch 2.6 / triton 3.2.
+    pip install --no-cache-dir --no-deps \
+        "fla-core==0.5.2" \
+        "flash-linear-attention==0.5.2" \
+        "liger-kernel==0.8.4"
+    pip install --no-cache-dir -r /opt/llamafactory/requirements/metrics.txt
+    # built once with: MAX_JOBS=32 TORCH_CUDA_ARCH_LIST=8.9 CAUSAL_CONV1D_FORCE_BUILD=TRUE \
+    #   pip wheel --no-deps --no-build-isolation causal-conv1d==1.5.3.post1  (inside this base image)
+    pip install --no-cache-dir --no-deps /opt/wheels/causal_conv1d-1.5.3.post1-cp311-cp311-linux_x86_64.whl
+    rm -rf /opt/wheels
+    # wandb 0.28.2: last line before the otel-sdk stack, accepts protobuf 7 and
+    # pydantic 2.12 (both pinned by gradio / base image); only adds
+    # opentelemetry-api + sentry-sdk.
+    pip install --no-cache-dir "wandb==0.28.2"
+
+    # Optional transformers bump. --no-deps: 5.12.1 only needs huggingface-hub
+    # <2,>=1.5 and tokenizers 0.22-0.23, both already satisfied by the base.
+    TRANSFORMERS_VERSION="5.12.1"
+    if [ -n "$TRANSFORMERS_VERSION" ]; then
+        pip install --no-cache-dir --no-deps "transformers==$TRANSFORMERS_VERSION"
+    fi
+
+    # Replace the base image's /app llamafactory with this checkout.
+    pip uninstall -y llamafactory || true
+    pip install --no-cache-dir --no-deps /opt/llamafactory
+
+    # triton / HF caches must not point at read-only image paths at runtime
+    mkdir -p /opt/llamafactory/.cache
+    pip cache purge || true
+
+%environment
+    export PYTHONUNBUFFERED=1
+    export TOKENIZERS_PARALLELISM=false
+    export VLLM_WORKER_MULTIPROC_METHOD=spawn
+
+%test
+    # Build-time test runs without --nv (no CUDA driver / GPU). Keep it to
+    # pure-python checks; GPU-dependent imports (deepspeed, fla kernels) are
+    # exercised by scripts/agent_sft/build_sif.sbatch after the build.
+    python - <<'EOF'
+import importlib
+for m in ("liger_kernel", "nltk", "jieba", "rouge_chinese", "flash_attn", "wandb", "causal_conv1d"):
+    importlib.import_module(m)
+import transformers
+from llamafactory.extras.env import VERSION
+from llamafactory.extras.misc import check_dependencies
+check_dependencies()  # the repo's own version gate must accept this transformers
+assert VERSION == "0.9.6.dev0", VERSION
+print("image OK, llamafactory", VERSION, "transformers", transformers.__version__)
+EOF
+
+%labels
+    Maintainer chenth
+    Purpose llamafactory-agent-sft

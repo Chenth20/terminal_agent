@@ -1,0 +1,71 @@
+# 256K-context stress test on TerminalHorizon (128 trajectories, 1 epoch).
+#
+# Data: coding_sft/prep/prepare_terminal_horizon.py --max-rows 128 --val-ratio 0.0625 --max-tokens 262144
+#   -> 145 train windows (120 trajs; p50 110K, p90 251K, max 261K tokens) + 9 eval windows (8 trajs)
+#   in /storage/openpsi/users/chen/data/terminal_horizon_128_256k. 110 of 128 trajectories now fit
+#   in ONE window (vs. 686 windows at 32K), so the model sees whole task histories.
+#
+# Optimizer per train.md (TerminalHorizon paper): fused AdamW (0.9,0.95), lr 1e-5, cosine,
+# warmup 0.05, wd 0.1, clip 1.0, micro-batch 1, packing OFF, bf16, ZeRO-3, FA2, seed 42.
+# 1 epoch for this test. global batch 8 (1 x 8 GPUs, ga 1) -> 19 steps.
+#
+# Memory/speed knobs are set from coding_sft/launch/slurm/bench_throughput.slurm (BASE=this file).
+
+### model
+model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B
+trust_remote_code: true
+flash_attn: fa2
+enable_liger_kernel: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset_dir: /storage/openpsi/users/chen/data/terminal_horizon_128_256k
+dataset: th128_256k
+eval_dataset: th128_256k_val
+template: qwen3_5
+enable_thinking: true
+cutoff_len: 262144
+train_on_prompt: false
+mask_history: false
+packing: false
+overwrite_cache: false
+preprocessing_num_workers: 16
+dataloader_num_workers: 2
+
+### eval
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 5
+
+### output
+output_dir: /storage/openpsi/users/chen/checkpoints/th128_256k_qwen3.5_4b
+logging_steps: 1
+save_strategy: epoch
+save_total_limit: 1
+save_only_model: true
+plot_loss: true
+overwrite_output_dir: true
+report_to: none
+include_num_input_tokens_seen: true
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-5
+num_train_epochs: 1.0
+optim: adamw_torch_fused
+adam_beta1: 0.9
+adam_beta2: 0.95
+weight_decay: 0.1
+max_grad_norm: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.05
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+seed: 42

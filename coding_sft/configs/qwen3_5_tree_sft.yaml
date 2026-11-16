@@ -1,0 +1,68 @@
+# Arm B (trunk+branches tree) SFT. Recipe copied verbatim from abl_mask_const_e5_slurm2n; only the data
+# (tree caches), the epochs (8), the per-epoch saving and the ga (64 trajectories / n_gpu) change.
+# One dataset row = one COMPLETE trajectory (trunk + all branches), so "effective batch 64" means
+# gradient_accumulation_steps = 64 / (nodes*8); per-row overhead is ~1.2x a whole trajectory.
+#
+# Launched through coding_sft/patches/train_tree.py (torchrun), not llamafactory-cli: the tree patch and
+# the tree collator must be installed before LF builds its trainer.
+#
+#   coding_sft/launch/slurm/run_tree.slurm  (NAME=flash|flash_solved|th3k)
+#   coding_sft/launch/ais/submit_tree_ais.sh (NAME=... NODES=4)
+
+### model
+model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B-text
+trust_remote_code: true
+flash_attn: fa2
+enable_liger_kernel: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset (tokenized_path is overridden per run; the tree cache carries the tree_* columns)
+dataset_dir: /storage/openpsi/users/chen/data/th3k_tree
+dataset: th3k_tree
+template: qwen3_5_text
+enable_thinking: true
+cutoff_len: 262144
+train_on_prompt: false
+mask_history: false
+packing: false
+overwrite_cache: false
+tokenized_path: /storage/openpsi/users/chen/data/th3k_tree/tokenized_qwen3_5_text_262144
+preprocessing_num_workers: 8
+dataloader_num_workers: 2
+
+### output (same checkpoint policy as every other run: full resume state every step, weights-only per epoch)
+output_dir: /storage/openpsi/users/chen/checkpoints/tree_run
+logging_steps: 1
+save_strategy: steps
+save_steps: 1
+save_total_limit: 1000
+save_only_model: false
+keep_optimizer_only_last: true
+keep_weights_every: 39
+plot_loss: true
+overwrite_output_dir: false
+report_to: none
+include_num_input_tokens_seen: true
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4
+disable_shuffling: true          # _schedNN caches are physically ordered: step s = 64 trajectories (build_tree_sched.py)
+learning_rate: 1.0e-5
+num_train_epochs: 1.0            # the sched cache already contains all 8 epochs (groups re-drawn per epoch, seed 42+ep)
+optim: adamw_torch_fused
+adam_beta1: 0.9
+adam_beta2: 0.95
+weight_decay: 0.1
+max_grad_norm: 1.0
+lr_scheduler_type: constant_with_warmup
+warmup_ratio: 0.1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+seed: 42

@@ -1,0 +1,96 @@
+# Full SFT of Qwen3.5-9B: IDENTICAL to qwen3_5_terminal_agent_sft_3k_256k.yaml except model_name_or_path
+# (text-only export of Qwen__Qwen3.5-9B via coding_sft/prep/export_qwen3_5_text_only.py). Same optimizer,
+# schedule, batch definition (64 trajectories/step) and checkpoint policy; launched with NODES=4 (ga = 64/32).
+# This is THE recipe shared by every ablation (see coding_sft/launch/train_th3k_c312.sh); ablations only override
+# dataset_dir / dataset / tokenized_path / output_dir / gradient_accumulation_steps (+ packing/sampler).
+#
+# Data: coding_sft/prep/prepare_terminal_horizon.py --no-chunk --max-tokens 262144 [--bad-pair ..] [--overlong ..]
+#   -> /storage/openpsi/users/chen/data/terminal_horizon_<variant>  (one sample per trajectory; user
+#      content stripped so train prefix == deploy prefix, see coding_sft/checks/check_prefix_consistency.py;
+#      optional per-turn "loss": 0 flag for malformed actions, see data/parser.py loss_tag).
+#
+# Model: text-only export (Qwen3_5ForCausalLM, coding_sft/prep/export_qwen3_5_text_only.py) with the
+# qwen3_5_text template. Chosen over the VLM checkpoint because:
+#   * Qwen3_5ForConditionalGeneration sets accepts_loss_kwargs=False -> HF Trainer falls back to
+#     "mean per micro-batch, then /grad_accum", i.e. every trajectory gets equal weight regardless of
+#     its target-token count. Qwen3_5ForCausalLM accepts loss kwargs -> loss is summed over the
+#     effective batch and divided by the all-reduced token count (true token-mean, train.md item 7).
+#   * No vision tower / MTP head in ZeRO-3 shards and checkpoints; no mm-plugin so the literal
+#     "<image>" strings in terminal output need no workaround.
+#   * Language weights are bit-identical (verified by greedy decode in the export script).
+#
+# Optimizer/schedule = TerminalHorizon paper (train.md): fused AdamW (0.9,0.95), lr 1e-5, cosine,
+# weight_decay 0.1, clip 1.0, micro-batch 1, packing OFF, bf16, ZeRO-3, FA2, seed 42; warmup raised
+# to 0.1 (only ~105 optimizer steps at bs 64, raw grad norm decays over the first ~10).
+# Effective batch = 64 trajectories everywhere (gradient_accumulation_steps = 64 / n_gpus).
+# Peak VRAM at 256K: ~100 GB of 143 GB (ZeRO-3 + liger + FA2 + grad-ckpt; nothing else fits).
+#
+# Speed: train_sampling_strategy=group_by_length (each step costs its longest sample; FA2 on the
+# full-attention layers is ~quadratic). tokenized_path caches the encoding; MUST be pre-built
+# (coding_sft/prep/build_tokenized.py) before any multi-node job.
+#
+# Launch: coding_sft/launch/ais/submit_ablation_ais.sh (AIS) / coding_sft/launch/slurm/run_ablation.slurm (Slurm).
+
+### model
+model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-9B-text
+trust_remote_code: true
+flash_attn: fa2
+enable_liger_kernel: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset_dir: /storage/openpsi/users/chen/data/terminal_horizon_3k_256k
+dataset: th3k_256k
+template: qwen3_5_text
+enable_thinking: true
+cutoff_len: 262144
+train_on_prompt: false
+mask_history: false
+packing: false
+overwrite_cache: false
+tokenized_path: /storage/openpsi/users/chen/data/terminal_horizon_3k_256k/tokenized_qwen3_5_text_262144
+preprocessing_num_workers: 32
+dataloader_num_workers: 2
+
+### output
+output_dir: /storage/openpsi/users/chen/checkpoints/th3k_256k_2ep_qwen3.5_4b
+logging_steps: 1
+save_strategy: steps
+# Checkpoint policy (DEFAULT for every run; the launchers set save_steps=1 + keep_weights_every=<steps/epoch>,
+# see src/llamafactory/train/callbacks.py): a FULL resume state (optimizer/scheduler/RNG/ZeRO-3 shards, ~55 GB)
+# every step -> a pre-emption loses at most one step; KeepOptimizerOnlyLastCallback then strips or deletes
+# every earlier checkpoint, so steady-state disk = 1 full ckpt + one WEIGHTS-ONLY ckpt per epoch (evaluation).
+save_steps: 1
+save_total_limit: 1000
+save_only_model: false          # newest checkpoint carries optimizer/scheduler/RNG -> resumable
+keep_optimizer_only_last: true  # previous checkpoint is stripped to weights (8 GB) once the new one is on disk
+keep_weights_every: 10          # overridden per run: steps per epoch
+plot_loss: true
+overwrite_output_dir: true
+report_to: none
+include_num_input_tokens_seen: true
+
+### train (TerminalHorizon paper settings, 3 epochs)
+# EFFECTIVE BATCH = 64 trajectories on every cluster: 8 GPU x ga 8 (Slurm) == 32 GPU x ga 2 (AIS 4 nodes).
+# Override gradient_accumulation_steps on the command line for other world sizes (64 / n_gpus).
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+train_sampling_strategy: group_by_length
+learning_rate: 1.0e-5
+num_train_epochs: 3.0
+optim: adamw_torch_fused
+adam_beta1: 0.9
+adam_beta2: 0.95
+weight_decay: 0.1
+max_grad_norm: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+seed: 42

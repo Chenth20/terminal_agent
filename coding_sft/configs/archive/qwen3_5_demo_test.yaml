@@ -1,0 +1,61 @@
+# Small end-to-end test on the repo's built-in demo data (data/alpaca_en_demo.json, 999 rows).
+# Purpose: validate an image (e.g. transformers 5.2.0 vs 5.12.1) on the same code path as the
+# real agent-SFT run (Qwen3.5-4B, full, ZeRO-3, qwen3_5 thinking template, liger, fa2) in a
+# few minutes, with metrics in W&B.
+#
+#   SIF=... sbatch coding_sft/launch/slurm/run_demo_test.slurm
+#
+# 999 rows / (1 x 2 x 8 GPUs) = 62 steps per epoch; 2 epochs -> 124 steps, ~10 min on 8xL20X.
+
+### model
+model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B
+trust_remote_code: true
+flash_attn: fa2
+enable_liger_kernel: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset: alpaca_en_demo
+template: qwen3_5
+cutoff_len: 2048
+overwrite_cache: true
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+
+### eval
+eval_dataset: identity
+per_device_eval_batch_size: 4
+eval_strategy: steps
+eval_steps: 20
+
+### output
+output_dir: /storage/openpsi/users/chen/checkpoints/demo_test_qwen3.5_4b
+logging_steps: 1
+save_strategy: steps
+save_steps: 62
+save_total_limit: 1
+save_only_model: true
+plot_loss: true
+overwrite_output_dir: true
+report_to: wandb
+run_name: demo_test_qwen3.5_4b
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 2
+learning_rate: 1.0e-5
+num_train_epochs: 2.0
+optim: adamw_torch_fused
+adam_beta2: 0.98
+max_grad_norm: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+seed: 42

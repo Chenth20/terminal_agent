@@ -1,0 +1,73 @@
+# Experiment 2 of the condition-mismatch study: "flash full, reasoning VISIBLE, whole trajectory".
+# Full SFT of Qwen3.5-4B-text on TerminalHorizon-dsv41-96k-SFT (DeepSeek-V4.1-Flash trajectories,
+# one conversation per compaction segment), every assistant turn keeps its <think> block in context
+# (mask_history false, template default preserve_thinking) and every assistant turn is supervised.
+#
+# Recipe = abl_mask_const_e5_slurm2n (coding_sft/configs/qwen3_5_terminal_agent_sft_3k_256k.yaml +
+# lr_scheduler_type=constant_with_warmup) with 8 epochs and this dataset; nothing else differs.
+#
+# Data: coding_sft/prep/build_flash_whole.py (reuses prepare_terminal_horizon.py: think-tag
+#   normalisation, JSON action validation with loss=0 masking of malformed actions, over-long
+#   conversations DROPPED, never truncated) -> /storage/openpsi/users/chen/data/flash_full_whole
+# Cache: coding_sft/prep/build_tokenized.py <this yaml> --set overwrite_cache=true   (MUST exist before launch)
+# Launch: coding_sft/launch/ais/submit_flash_whole_ais.sh (AIS, 2 nodes, ga 4 -> effective batch 64)
+# "Per epoch" saving: save_steps = keep_weights_every = ceil(n_rows / 64) (filled in by the launcher).
+
+### model
+model_name_or_path: /storage/openpsi/users/chen/models/Qwen__Qwen3.5-4B-text
+trust_remote_code: true
+flash_attn: fa2
+enable_liger_kernel: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset_dir: /storage/openpsi/users/chen/data/flash_full_whole
+dataset: flash_whole
+template: qwen3_5_text
+enable_thinking: true
+cutoff_len: 262144
+train_on_prompt: false
+mask_history: false
+packing: false
+overwrite_cache: false
+tokenized_path: /storage/openpsi/users/chen/data/flash_full_whole/tokenized_qwen3_5_text_262144
+preprocessing_num_workers: 32
+dataloader_num_workers: 2
+
+### output
+output_dir: /storage/openpsi/users/chen/checkpoints/flash_whole_ais2n
+logging_steps: 1
+save_strategy: steps
+save_steps: 58                  # = ceil(3710 / 64) = one checkpoint per epoch
+save_total_limit: 8
+save_only_model: false          # newest checkpoint carries optimizer/scheduler/RNG -> resumable
+keep_optimizer_only_last: true  # previous checkpoint is stripped to weights once the new one is on disk
+keep_weights_every: 58          # keep the weights of every epoch-end checkpoint
+plot_loss: true
+overwrite_output_dir: false
+report_to: wandb
+include_num_input_tokens_seen: true
+
+### train (reference recipe, 8 epochs)
+# EFFECTIVE BATCH = 64 trajectories: gradient_accumulation_steps = 64 / (nodes * 8) -> 4 on 2 nodes.
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4
+train_sampling_strategy: group_by_length
+learning_rate: 1.0e-5
+num_train_epochs: 8.0
+optim: adamw_torch_fused
+adam_beta1: 0.9
+adam_beta2: 0.95
+weight_decay: 0.1
+max_grad_norm: 1.0
+lr_scheduler_type: constant_with_warmup
+warmup_ratio: 0.1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+seed: 42

@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Local workspace configuration and credentials
+/AGENTS.md
+.env
+.env.*
+.secrets/
+
+# Shared data, model weights, training runs and local caches
+/storage
+/runs/
+/checkpoints/
+wandb/
+*.safetensors
+*.pt
+*.pth
+*.arrow
+*.sif
