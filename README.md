@@ -48,18 +48,3 @@ PY="$SQZ_ROOT/conda/envs/lf/bin/python"
 默认卸载 28 层激活，8 卡、GA8、每步 64 条轨迹。历史运行完成 10 步，累计 81,642,520 tokens，最终 loss 1.28295。成功运行的 `driver.log` 末行是 `check10 passed`。[原始验证实现](coding_sft/h100/reference/)
 
 比较卸载层数可运行 `bash coding_sft/h100/bench.sh "$SQZ_ROOT/runs/bench-$(date +%Y%m%d-%H%M%S)" 20-vs-24`。已有运行可用 `python coding_sft/h100/summarize.py RUN_DIR` 离线汇总。20 层在 65k 配对短测比 24 层快约 6.2%，但在最长批次反向传播时 OOM；24 层完成了该批次的单步检查。
-
-## 双节点 c312
-
-两台节点应能访问同一项目、flat cache 与输出目录。将 `MASTER_ADDR` 设成首节点的可达地址，在两个节点分别运行对应的一条命令。
-
-```bash
-# 首节点
-NODE_RANK=0 MASTER_ADDR="$MASTER_ADDR" bash coding_sft/launch/train_th3k_c312.sh
-# 第二个节点
-NODE_RANK=1 MASTER_ADDR="$MASTER_ADDR" bash coding_sft/launch/train_th3k_c312.sh
-```
-
-两节点共 16 卡，微批 1、GA4，按长度分组，恒定学习率 1e-5、warmup 12 步。重复使用同一 `OUT_DIR` 会从已保存的进度续训。可用 `MODEL_DIR`、`DATA_DIR`、`FLAT_CACHE`、`OUT_DIR` 分别覆盖输入和输出位置。[基础配方](coding_sft/configs/qwen3_5_terminal_agent_sft_3k_256k.yaml)
-
-历史 TB2.1 旧 verifier、Terminus 1.0.0 下，4B base 为 50/267，c312 为 62/178。同一 c312 在 mirror verifier 1.0.1 下为 73/178。H100 十步验证衡量训练链路，未产生新的 TB2.1 成绩。
